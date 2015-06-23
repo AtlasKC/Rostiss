@@ -2,7 +2,6 @@
 About the game...
 
 Hello!  Rostiss is a massively multiplayer online shooter video game created by Rostiss Development Team.  The game is still in it's early stages so not much is known about what the finished product will include; be sure to come back in the near future to check out any updates!
-
 =
 About the developers...
 
