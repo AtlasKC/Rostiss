@@ -20,6 +20,9 @@ public class Sprite {
 
     public static Sprite GRASS = new Sprite(16, 0, 0, SpriteSheet.SPRITESHEET);
     public static Sprite VOID = new Sprite(16, 0x7700FF);
+    public static Sprite PLAYER_F1 = new Sprite(16, 0, 13, SpriteSheet.SPRITESHEET);
+    public static Sprite PLAYER_F2 = new Sprite(16, 0, 14, SpriteSheet.SPRITESHEET);
+    public static Sprite PLAYER_F3 = new Sprite(16, 0, 15, SpriteSheet.SPRITESHEET);
 
     public int[] pixels;
     public final int SIZE;

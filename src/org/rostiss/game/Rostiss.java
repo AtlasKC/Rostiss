@@ -1,5 +1,6 @@
 package org.rostiss.game;
 
+import org.rostiss.game.entity.mob.Player;
 import org.rostiss.game.graphics.Renderer2D;
 import org.rostiss.game.input.Keyboard;
 import org.rostiss.game.level.Level;
@@ -38,11 +39,11 @@ public class Rostiss extends Canvas implements Runnable {
     private Renderer2D renderer;
     private Level level;
     private Keyboard keyboard;
+    private Player player;
     private Thread thread;
     private JFrame frame;
     private BufferedImage image;
     private int[] pixels;
-    private int dx = 0, dy = 0;
     private boolean running = false;
 
     public Rostiss() {
@@ -63,6 +64,7 @@ public class Rostiss extends Canvas implements Runnable {
         renderer = new Renderer2D(width, height);
         level = new RandomLevel(64, 64);
         keyboard = new Keyboard();
+        player = new Player(keyboard, 0, 0);
         Dimension size = new Dimension(this.width * this.scale, this.height * this.scale);
         setPreferredSize(size);
         frame = new JFrame();
@@ -78,6 +80,7 @@ public class Rostiss extends Canvas implements Runnable {
     }
 
     public synchronized void start() {
+        requestFocus();
         running = true;
         thread = new Thread(this, "Display");
         thread.start();
@@ -120,12 +123,8 @@ public class Rostiss extends Canvas implements Runnable {
     }
 
     public void update() {
-        requestFocus();
         keyboard.update();
-        if (keyboard.up) dy--;
-        if (keyboard.down) dy++;
-        if (keyboard.left) dx--;
-        if (keyboard.right) dx++;
+        player.update();
     }
 
     public void render() {
@@ -135,10 +134,13 @@ public class Rostiss extends Canvas implements Runnable {
             return;
         }
         renderer.clear();
-        level.render(dx, dy, renderer);
+        level.render(player.x, player.y, renderer);
         arraycopy(renderer.pixels, 0, pixels, 0, pixels.length);
         Graphics g = bufferStrategy.getDrawGraphics();
         g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
+        g.setColor(Color.white);
+        g.setFont(new Font("Verdana", 0, 30));
+        g.drawString("X: " + player.x + ", Y: " + player.y, 10, getHeight() - 10);
         g.dispose();
         bufferStrategy.show();
     }
