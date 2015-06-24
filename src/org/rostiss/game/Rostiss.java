@@ -4,7 +4,6 @@ import org.rostiss.game.entity.mob.Player;
 import org.rostiss.game.graphics.Renderer2D;
 import org.rostiss.game.input.Keyboard;
 import org.rostiss.game.level.Level;
-import org.rostiss.game.level.RandomLevel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,7 +36,6 @@ public class Rostiss extends Canvas implements Runnable {
 
     private String title;
     private Renderer2D renderer;
-    private Level level;
     private Keyboard keyboard;
     private Player player;
     private Thread thread;
@@ -62,9 +60,8 @@ public class Rostiss extends Canvas implements Runnable {
         image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
         renderer = new Renderer2D(width, height);
-        level = new RandomLevel(64, 64);
         keyboard = new Keyboard();
-        player = new Player(keyboard, 0, 0);
+        player = new Player(keyboard, 16 * 10, 16 * 6);
         Dimension size = new Dimension(this.width * this.scale, this.height * this.scale);
         setPreferredSize(size);
         frame = new JFrame();
@@ -136,7 +133,7 @@ public class Rostiss extends Canvas implements Runnable {
         renderer.clear();
         int dx = player.x - renderer.width / 2;
         int dy = player.y - renderer.height / 2;
-        level.render(dx, dy, renderer);
+        Level.spawn.render(dx, dy, renderer);
         player.render(renderer);
         arraycopy(renderer.pixels, 0, pixels, 0, pixels.length);
         Graphics g = bufferStrategy.getDrawGraphics();

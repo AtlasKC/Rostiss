@@ -22,7 +22,8 @@ import java.io.IOException;
 
 public class SpriteSheet {
 
-    public static SpriteSheet SPRITESHEET = new SpriteSheet("/textures/spritesheet.png", 256);
+    public static SpriteSheet SPRITESHEET = new SpriteSheet("/sprites/spritesheet.png", 256);
+    public static SpriteSheet LEVEL_SPAWN = new SpriteSheet("/sprites/spawn_level.png", 48);
 
     public final int SIZE;
     public int[] pixels;

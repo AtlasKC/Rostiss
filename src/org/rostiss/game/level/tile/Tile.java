@@ -2,6 +2,10 @@ package org.rostiss.game.level.tile;
 
 import org.rostiss.game.graphics.Renderer2D;
 import org.rostiss.game.graphics.Sprite;
+import org.rostiss.game.level.tile.spawn_level.GrassTile;
+import org.rostiss.game.level.tile.spawn_level.RockTile;
+import org.rostiss.game.level.tile.spawn_level.WallTile;
+import org.rostiss.game.level.tile.spawn_level.WaterTile;
 
 /**
  * File: Tile.java
@@ -21,9 +25,18 @@ import org.rostiss.game.graphics.Sprite;
 
 public class Tile {
 
-    public static Tile GRASS = new GrassTile(Sprite.GRASS);
-    public static Tile FLOWER = new GrassTile(Sprite.FLOWER);
-    public static Tile ROCK = new GrassTile(Sprite.ROCK);
+    public static final int grass = 0xFF00FF00;
+    public static final int brick1 = 0xFF7A7A7A;
+    public static final int brick2 = 0xFFA7A7A7;
+    public static final int rock = 0xFF7A7A00;
+    public static final int water = 0xFF0000FF;
+
+    public static Tile GRASS1 = new GrassTile(Sprite.GRASS1);
+    public static Tile GRASS2 = new GrassTile(Sprite.GRASS2);
+    public static Tile BRICK1 = new WallTile(Sprite.BRICK1);
+    public static Tile BRICK2 = new WallTile(Sprite.BRICK2);
+    public static Tile ROCK = new RockTile(Sprite.ROCK);
+    public static Tile WATER = new WaterTile(Sprite.WATER);
     public static Tile VOID = new VoidTile(Sprite.VOID);
 
     public int x, y;

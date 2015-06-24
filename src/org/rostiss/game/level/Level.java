@@ -21,18 +21,21 @@ import org.rostiss.game.level.tile.Tile;
 
 public class Level {
 
+    public static Level spawn = new SpawnLevel("/levels/spawn_level.png");
+
     protected int[] tiles;
     protected int width, height;
 
     public Level(String file) {
         loadLevel(file);
+        generateLevel();
     }
 
     public Level(int width, int height) {
         this.width = width;
         this.height = height;
         tiles = new int[width * height];
-        generateRandomLevel();
+        generateLevel();
     }
 
     public void update() {
@@ -53,16 +56,18 @@ public class Level {
 
     public Tile getTile(int x, int y) {
         if(x < 0 || y < 0 || x >= width || y >= height) return Tile.VOID;
-        if (tiles[x + y * width] == 0) return Tile.GRASS;
-        if (tiles[x + y * width] == 1) return Tile.FLOWER;
-        if (tiles[x + y * width] == 2) return Tile.ROCK;
+        if (tiles[x + y * width] == Tile.grass) return Tile.GRASS2;
+        if (tiles[x + y * width] == Tile.water) return Tile.WATER;
+        if (tiles[x + y * width] == Tile.rock) return Tile.ROCK;
+        if (tiles[x + y * width] == Tile.brick1) return Tile.BRICK1;
+        if (tiles[x + y * width] == Tile.brick2) return Tile.BRICK2;
         return Tile.VOID;
     }
 
     private void time() {
     }
 
-    protected void generateRandomLevel() {
+    protected void generateLevel() {
     }
 
     protected void loadLevel(String file) {

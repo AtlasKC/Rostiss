@@ -18,9 +18,12 @@ package org.rostiss.game.graphics;
 
 public class Sprite {
 
-    public static Sprite GRASS = new Sprite(16, 0, 0, SpriteSheet.SPRITESHEET);
-    public static Sprite FLOWER = new Sprite(16, 1, 0, SpriteSheet.SPRITESHEET);
-    public static Sprite ROCK = new Sprite(16, 2, 0, SpriteSheet.SPRITESHEET);
+    public static Sprite GRASS1 = new Sprite(16, 0, 0, SpriteSheet.LEVEL_SPAWN);
+    public static Sprite GRASS2 = new Sprite(16, 1, 0, SpriteSheet.LEVEL_SPAWN);
+    public static Sprite BRICK1 = new Sprite(16, 0, 1, SpriteSheet.LEVEL_SPAWN);
+    public static Sprite BRICK2 = new Sprite(16, 0, 2, SpriteSheet.LEVEL_SPAWN);
+    public static Sprite ROCK = new Sprite(16, 1, 1, SpriteSheet.LEVEL_SPAWN);
+    public static Sprite WATER = new Sprite(16, 2, 0, SpriteSheet.LEVEL_SPAWN);
     public static Sprite VOID = new Sprite(16, 0x7700FF);
     public static Sprite PLAYER_FN = new Sprite(32, 1, 7, SpriteSheet.SPRITESHEET);
     public static Sprite PLAYER_FL = new Sprite(32, 1, 6, SpriteSheet.SPRITESHEET);
@@ -59,10 +62,8 @@ public class Sprite {
     }
 
     private void load() {
-        for(int y = 0; y < SIZE; y++) {
-            for(int x = 0; x < SIZE; x++) {
+        for(int y = 0; y < SIZE; y++)
+            for(int x = 0; x < SIZE; x++)
                 pixels[x + y * SIZE] = spriteSheet.pixels[(x + this.x) + (y + this.y) * spriteSheet.SIZE];
-            }
-        }
     }
 }

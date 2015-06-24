@@ -1,10 +1,12 @@
-package org.rostiss.game.level;
+package org.rostiss.game.level.tile.spawn_level;
 
-import java.util.Random;
+import org.rostiss.game.graphics.Renderer2D;
+import org.rostiss.game.graphics.Sprite;
+import org.rostiss.game.level.tile.Tile;
 
 /**
- * File: RandomLevel.java
- * Created by Atlas IND on 6/22/2015 at 2:51 PM.
+ * File: GrassTile.java
+ * Created by Atlas IND on 6/22/2015 at 3:09 PM.
  * [2014] - [2015] Rostiss Development
  * All rights reserved.
  * NOTICE:  All information contained herein is, and remains
@@ -18,19 +20,13 @@ import java.util.Random;
  * from Rostiss Development.
  */
 
-public class RandomLevel extends Level {
+public class GrassTile extends Tile {
 
-    private static final Random random = new Random();
-
-    public RandomLevel(int width, int height) {
-        super(width, height);
+    public GrassTile(Sprite sprite) {
+        super(sprite);
     }
 
-    protected void generateLevel() {
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                tiles[x + y * width] = random.nextInt(4);
-            }
-        }
+    public void render(int x, int y, Renderer2D renderer) {
+        renderer.renderTile(x << 4, y << 4, this);
     }
 }

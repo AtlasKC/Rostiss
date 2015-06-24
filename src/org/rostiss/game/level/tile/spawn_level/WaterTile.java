@@ -1,11 +1,12 @@
-package org.rostiss.game.level.tile;
+package org.rostiss.game.level.tile.spawn_level;
 
 import org.rostiss.game.graphics.Renderer2D;
 import org.rostiss.game.graphics.Sprite;
+import org.rostiss.game.level.tile.Tile;
 
 /**
- * File: GrassTile.java
- * Created by Atlas IND on 6/22/2015 at 3:09 PM.
+ * File: WaterTile.java
+ * Created by Atlas IND on 6/24/2015 at 12:30 PM.
  * [2014] - [2015] Rostiss Development
  * All rights reserved.
  * NOTICE:  All information contained herein is, and remains
@@ -19,9 +20,9 @@ import org.rostiss.game.graphics.Sprite;
  * from Rostiss Development.
  */
 
-public class GrassTile extends Tile {
+public class WaterTile extends Tile {
 
-    public GrassTile(Sprite sprite) {
+    public WaterTile(Sprite sprite) {
         super(sprite);
     }
 

@@ -1,7 +1,8 @@
-package org.rostiss.game.level.tile;
+package org.rostiss.game.level.tile.spawn_level;
 
 import org.rostiss.game.graphics.Renderer2D;
 import org.rostiss.game.graphics.Sprite;
+import org.rostiss.game.level.tile.Tile;
 
 /**
  * File: RockTile.java
@@ -18,6 +19,7 @@ import org.rostiss.game.graphics.Sprite;
  * is strictly forbidden unless prior written permission is obtained
  * from Rostiss Development.
  */
+
 public class RockTile extends Tile {
 
     public RockTile(Sprite sprite) {
@@ -26,9 +28,5 @@ public class RockTile extends Tile {
 
     public void render(int x, int y, Renderer2D renderer) {
         renderer.renderTile(x << 4, y << 4, this);
-    }
-
-    public boolean solid() {
-        return true;
     }
 }
