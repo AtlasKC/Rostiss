@@ -39,6 +39,27 @@ public class Renderer2D {
         tiles[0] = 0;
     }
 
+    public void renderPlayer(int xPos, int yPos, Sprite sprite, boolean reflectX) {
+        xPos -= xOffset;
+        yPos -= yOffset;
+        for (int y = 0; y < sprite.SIZE; y++) {
+            int worldY = yPos + y;
+            for (int x = 0; x < sprite.SIZE; x++) {
+                int worldX = xPos + x;
+                int dx = sprite.SIZE - 1 - x;
+                if (worldX < -sprite.SIZE || worldX >= width || worldY < 0 || worldY >= height) break;
+                if (worldX < 0) worldX = 0;
+                int color;
+                if (reflectX)
+                    color = sprite.pixels[dx + y * sprite.SIZE];
+                else
+                    color = sprite.pixels[x + y * sprite.SIZE];
+                if (color != 0xFFFF00FF)
+                    pixels[worldX + worldY * width] = color;
+            }
+        }
+    }
+
     public void renderTile(int xPos, int yPos, Tile tile) {
         xPos -= xOffset;
         yPos -= yOffset;
@@ -46,8 +67,8 @@ public class Renderer2D {
             int worldY = yPos + y;
             for (int x = 0; x < tile.sprite.SIZE; x++) {
                 int worldX = xPos + x;
-                if(worldX < -tile.sprite.SIZE || worldX >= width || worldY < 0 || worldY >= height) break;
-                if(worldX < 0) worldX = 0;
+                if (worldX < -tile.sprite.SIZE || worldX >= width || worldY < 0 || worldY >= height) break;
+                if (worldX < 0) worldX = 0;
                 pixels[worldX + worldY * width] = tile.sprite.pixels[x + y * tile.sprite.SIZE];
             }
         }

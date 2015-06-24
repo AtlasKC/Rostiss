@@ -134,7 +134,10 @@ public class Rostiss extends Canvas implements Runnable {
             return;
         }
         renderer.clear();
-        level.render(player.x, player.y, renderer);
+        int dx = player.x - renderer.width / 2;
+        int dy = player.y - renderer.height / 2;
+        level.render(dx, dy, renderer);
+        player.render(renderer);
         arraycopy(renderer.pixels, 0, pixels, 0, pixels.length);
         Graphics g = bufferStrategy.getDrawGraphics();
         g.drawImage(image, 0, 0, getWidth(), getHeight(), null);

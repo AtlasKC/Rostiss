@@ -1,5 +1,6 @@
 package org.rostiss.game.entity.mob;
 
+import org.rostiss.game.graphics.Renderer2D;
 import org.rostiss.game.graphics.Sprite;
 import org.rostiss.game.input.Keyboard;
 
@@ -22,6 +23,9 @@ import org.rostiss.game.input.Keyboard;
 public class Player extends Mob {
 
     private Keyboard keyboard;
+    private Sprite sprite;
+    private int animation;
+    private boolean walking;
 
     public Player(Keyboard keyboard) {
         this.keyboard = keyboard;
@@ -31,19 +35,63 @@ public class Player extends Mob {
         this.keyboard = keyboard;
         this.x = x;
         this.y = y;
-        this.sprite = Sprite.PLAYER_F1;
+        this.sprite = Sprite.PLAYER_FN;
     }
 
     public void update() {
         int dx = 0, dy = 0;
+        animation++;
+        if (animation >= 2147483646)
+            animation = 0;
         if (keyboard.up) dy--;
         if (keyboard.down) dy++;
         if (keyboard.left) dx--;
         if (keyboard.right) dx++;
-        if(dx != 0 || dy != 0) move(dx, dy);
+        if (dx != 0 || dy != 0) {
+            move(dx, dy);
+            walking = true;
+        } else
+            walking = false;
     }
 
-    public void render() {
-
+    public void render(Renderer2D renderer) {
+        if (direction == 0) {
+            sprite = Sprite.PLAYER_FN;
+            if (walking) {
+                if (animation % 20 >= 10)
+                    sprite = Sprite.PLAYER_FL;
+                else
+                    sprite = Sprite.PLAYER_FR;
+            }
+        }
+        if (direction == 1) {
+            sprite = Sprite.PLAYER_SN;
+            if (walking) {
+                if (animation % 20 >= 10)
+                    sprite = Sprite.PLAYER_SL;
+                else
+                    sprite = Sprite.PLAYER_SR;
+            }
+        }
+        if (direction == 2) {
+            sprite = Sprite.PLAYER_BN;
+            if (walking) {
+                if (animation % 20 >= 10)
+                    sprite = Sprite.PLAYER_BL;
+                else
+                    sprite = Sprite.PLAYER_BR;
+            }
+        }
+        if (direction == 3) {
+            sprite = Sprite.PLAYER_SN;
+            if (walking) {
+                if (animation % 20 >= 10)
+                    sprite = Sprite.PLAYER_SL;
+                else
+                    sprite = Sprite.PLAYER_SR;
+            }
+            renderer.renderPlayer(x - 8, y - 8, sprite, true);
+        } else
+            renderer.renderPlayer(x - 8, y - 8, sprite, false);
     }
 }

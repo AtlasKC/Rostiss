@@ -22,7 +22,7 @@ import org.rostiss.game.graphics.Sprite;
 public class Tile {
 
     public static Tile GRASS = new GrassTile(Sprite.GRASS);
-    public static Tile VOID = new VoidTile(Sprite.PLAYER_F1);
+    public static Tile VOID = new VoidTile(Sprite.VOID);
 
     public int x, y;
     public Sprite sprite;

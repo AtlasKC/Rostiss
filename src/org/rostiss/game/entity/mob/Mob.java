@@ -22,7 +22,7 @@ import org.rostiss.game.graphics.Sprite;
 public abstract class Mob extends Entity {
 
     protected Sprite sprite;
-    protected int direction;
+    protected int direction = 0;
     protected boolean moving = false;
 
     public void update() {
