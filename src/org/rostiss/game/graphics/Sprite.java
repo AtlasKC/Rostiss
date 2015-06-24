@@ -19,16 +19,18 @@ package org.rostiss.game.graphics;
 public class Sprite {
 
     public static Sprite GRASS = new Sprite(16, 0, 0, SpriteSheet.SPRITESHEET);
+    public static Sprite FLOWER = new Sprite(16, 1, 0, SpriteSheet.SPRITESHEET);
+    public static Sprite ROCK = new Sprite(16, 2, 0, SpriteSheet.SPRITESHEET);
     public static Sprite VOID = new Sprite(16, 0x7700FF);
-    public static Sprite PLAYER_FN = new Sprite(16, 0, 13, SpriteSheet.SPRITESHEET);
-    public static Sprite PLAYER_FL = new Sprite(16, 0, 14, SpriteSheet.SPRITESHEET);
-    public static Sprite PLAYER_FR = new Sprite(16, 0, 15, SpriteSheet.SPRITESHEET);
-    public static Sprite PLAYER_BN = new Sprite(16, 1, 13, SpriteSheet.SPRITESHEET);
-    public static Sprite PLAYER_BL = new Sprite(16, 1, 14, SpriteSheet.SPRITESHEET);
-    public static Sprite PLAYER_BR = new Sprite(16, 1, 15, SpriteSheet.SPRITESHEET);
-    public static Sprite PLAYER_SN = new Sprite(16, 2, 13, SpriteSheet.SPRITESHEET);
-    public static Sprite PLAYER_SL = new Sprite(16, 2, 14, SpriteSheet.SPRITESHEET);
-    public static Sprite PLAYER_SR = new Sprite(16, 2, 15, SpriteSheet.SPRITESHEET);
+    public static Sprite PLAYER_FN = new Sprite(32, 1, 7, SpriteSheet.SPRITESHEET);
+    public static Sprite PLAYER_FL = new Sprite(32, 1, 6, SpriteSheet.SPRITESHEET);
+    public static Sprite PLAYER_FR = new Sprite(32, 1, 5, SpriteSheet.SPRITESHEET);
+    public static Sprite PLAYER_BN = new Sprite(32, 0, 7, SpriteSheet.SPRITESHEET);
+    public static Sprite PLAYER_BL = new Sprite(32, 0, 6, SpriteSheet.SPRITESHEET);
+    public static Sprite PLAYER_BR = new Sprite(32, 0, 5, SpriteSheet.SPRITESHEET);
+    public static Sprite PLAYER_SN = new Sprite(32, 2, 7, SpriteSheet.SPRITESHEET);
+    public static Sprite PLAYER_SL = new Sprite(32, 2, 6, SpriteSheet.SPRITESHEET);
+    public static Sprite PLAYER_SR = new Sprite(32, 2, 5, SpriteSheet.SPRITESHEET);
 
     public int[] pixels;
     public final int SIZE;

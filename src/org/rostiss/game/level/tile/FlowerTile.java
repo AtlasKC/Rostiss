@@ -4,8 +4,8 @@ import org.rostiss.game.graphics.Renderer2D;
 import org.rostiss.game.graphics.Sprite;
 
 /**
- * File: Tile.java
- * Created by Atlas IND on 6/22/2015 at 3:01 PM.
+ * File: FlowerTile.java
+ * Created by Atlas IND on 6/23/2015 at 11:11 PM.
  * [2014] - [2015] Rostiss Development
  * All rights reserved.
  * NOTICE:  All information contained herein is, and remains
@@ -19,24 +19,13 @@ import org.rostiss.game.graphics.Sprite;
  * from Rostiss Development.
  */
 
-public class Tile {
+public class FlowerTile extends Tile {
 
-    public static Tile GRASS = new GrassTile(Sprite.GRASS);
-    public static Tile FLOWER = new GrassTile(Sprite.FLOWER);
-    public static Tile ROCK = new GrassTile(Sprite.ROCK);
-    public static Tile VOID = new VoidTile(Sprite.VOID);
-
-    public int x, y;
-    public Sprite sprite;
-
-    public Tile(Sprite sprite) {
-        this.sprite = sprite;
+    public FlowerTile(Sprite sprite) {
+        super(sprite);
     }
 
     public void render(int x, int y, Renderer2D renderer) {
-    }
-
-    public boolean solid() {
-        return false;
+        renderer.renderTile(x << 4, y << 4, this);
     }
 }

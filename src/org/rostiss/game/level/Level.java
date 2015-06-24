@@ -54,6 +54,8 @@ public class Level {
     public Tile getTile(int x, int y) {
         if(x < 0 || y < 0 || x >= width || y >= height) return Tile.VOID;
         if (tiles[x + y * width] == 0) return Tile.GRASS;
+        if (tiles[x + y * width] == 1) return Tile.FLOWER;
+        if (tiles[x + y * width] == 2) return Tile.ROCK;
         return Tile.VOID;
     }
 
