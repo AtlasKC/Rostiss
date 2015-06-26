@@ -4,6 +4,7 @@ import org.rostiss.game.entity.mob.Player;
 import org.rostiss.game.graphics.Renderer2D;
 import org.rostiss.game.input.Keyboard;
 import org.rostiss.game.level.Level;
+import org.rostiss.game.level.TileCoords;
 
 import javax.swing.*;
 import java.awt.*;
@@ -61,7 +62,8 @@ public class Rostiss extends Canvas implements Runnable {
         pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
         renderer = new Renderer2D(width, height);
         keyboard = new Keyboard();
-        player = new Player(keyboard, 16 * 10, 16 * 6);
+        TileCoords spawn = new TileCoords(19, 62);
+        player = new Player(keyboard, spawn.getX(), spawn.getY());
         Dimension size = new Dimension(this.width * this.scale, this.height * this.scale);
         setPreferredSize(size);
         frame = new JFrame();
@@ -138,9 +140,6 @@ public class Rostiss extends Canvas implements Runnable {
         arraycopy(renderer.pixels, 0, pixels, 0, pixels.length);
         Graphics g = bufferStrategy.getDrawGraphics();
         g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
-        g.setColor(Color.white);
-        g.setFont(new Font("Verdana", 0, 30));
-        g.drawString("X: " + player.x + ", Y: " + player.y, 10, getHeight() - 10);
         g.dispose();
         bufferStrategy.show();
     }

@@ -2,6 +2,7 @@ package org.rostiss.game.entity.mob;
 
 import org.rostiss.game.entity.Entity;
 import org.rostiss.game.graphics.Sprite;
+import org.rostiss.game.level.Level;
 
 /**
  * File: Mob.java
@@ -29,11 +30,16 @@ public abstract class Mob extends Entity {
     }
 
     public void move(int dx, int dy) {
+        if(dx != 0 && dy != 0) {
+            move(dx, 0);
+            move(0, dy);
+            return;
+        }
         if(dx > 0) direction = 1;
         if(dx < 0) direction = 3;
         if(dy > 0) direction = 2;
         if(dy < 0) direction = 0;
-        if(!collision()) {
+        if(!collision(dx, dy)) {
             x += dx;
             y += dy;
         }
@@ -42,7 +48,7 @@ public abstract class Mob extends Entity {
     public void render() {
     }
 
-    private boolean collision() {
-        return false;
+    private boolean collision(int dx, int dy) {
+        return Level.spawn.getTile((x + dx) / 16, (y + dy) / 16).solid();
     }
 }
