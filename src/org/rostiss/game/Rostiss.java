@@ -3,6 +3,7 @@ package org.rostiss.game;
 import org.rostiss.game.entity.mob.Player;
 import org.rostiss.game.graphics.Renderer2D;
 import org.rostiss.game.input.Keyboard;
+import org.rostiss.game.input.Mouse;
 import org.rostiss.game.level.Level;
 import org.rostiss.game.level.TileCoords;
 
@@ -37,7 +38,8 @@ public class Rostiss extends Canvas implements Runnable {
 
     private String title;
     private Renderer2D renderer;
-    private Keyboard keyboard;
+    private Keyboard keyboard = new Keyboard();
+    private Mouse mouse = new Mouse();
     private Player player;
     private Thread thread;
     private JFrame frame;
@@ -61,7 +63,6 @@ public class Rostiss extends Canvas implements Runnable {
         image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
         renderer = new Renderer2D(width, height);
-        keyboard = new Keyboard();
         TileCoords spawn = new TileCoords(19, 62);
         player = new Player(keyboard, spawn.getX(), spawn.getY());
         Dimension size = new Dimension(this.width * this.scale, this.height * this.scale);
@@ -75,6 +76,8 @@ public class Rostiss extends Canvas implements Runnable {
         frame.setTitle(title + " - 0 ups, 0 fps");
         frame.setVisible(true);
         addKeyListener(keyboard);
+        addMouseListener(mouse);
+        addMouseMotionListener(mouse);
         start();
     }
 
@@ -140,6 +143,8 @@ public class Rostiss extends Canvas implements Runnable {
         arraycopy(renderer.pixels, 0, pixels, 0, pixels.length);
         Graphics g = bufferStrategy.getDrawGraphics();
         g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
+        g.setColor(Color.red);
+        g.fillRoundRect(mouse.getX() - 24, mouse.getY() - 24, 48, 48, 48, 48);
         g.dispose();
         bufferStrategy.show();
     }

@@ -49,6 +49,13 @@ public abstract class Mob extends Entity {
     }
 
     private boolean collision(int dx, int dy) {
-        return Level.spawn.getTile((x + dx) / 16, (y + dy) / 16).solid();
+        boolean solid = false;
+        for(int c = 0; c < 4; c++) {
+            int xt = ((x + dx) + c % 2 * 14 + 0) / 16;
+            int yt = ((y + dy) + c / 2 * 12 + 8) / 16;
+            if(Level.spawn.getTile(xt, yt).solid())
+                solid = true;
+        }
+        return solid;
     }
 }
