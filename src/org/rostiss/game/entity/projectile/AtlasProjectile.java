@@ -30,7 +30,7 @@ public class AtlasProjectile extends Projectile {
         sprite = Sprite.ATLAS;
         damage = 20;
         range = 200;
-        speed = 4;
+        speed = 2;
         dx = speed * cos(this.angle);
         dy = speed * sin(this.angle);
     }

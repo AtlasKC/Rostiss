@@ -34,9 +34,11 @@ import static java.lang.System.nanoTime;
 
 public class Rostiss extends Canvas implements Runnable {
 
+    private static Rostiss instance = new Rostiss();
     private Renderer2D renderer;
     private Keyboard keyboard = new Keyboard();
     private Mouse mouse = new Mouse();
+    private Level level = Level.spawn;
     private Player player;
     private Thread thread;
     private JFrame frame;
@@ -46,26 +48,29 @@ public class Rostiss extends Canvas implements Runnable {
     private int scale, width, height;
     private boolean running = false;
 
-    public Rostiss() {
-        this("Rostiss");
+    private Rostiss() {
+        this("Rostiss 0.1.3-7 Beta");
     }
 
-    public Rostiss(String title) {
-        this(title, 300, (int) 168.75, 3);
+    private Rostiss(String title) {
+        this(title, 300, 300 / 16 * 9, 3);
     }
 
-    public Rostiss(String title, int width, int height, int scale) {
+    private Rostiss(String title, int width, int height, int scale) {
         this.width = width;
         this.height = height;
         this.scale = scale;
         this.title = title;
+        TileCoords spawn = new TileCoords(19, 62);
+        setPreferredSize(new Dimension(this.width * this.scale, this.height * this.scale));
+        addKeyListener(keyboard);
+        addMouseListener(mouse);
+        addMouseMotionListener(mouse);
         image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
         renderer = new Renderer2D(width, height);
-        TileCoords spawn = new TileCoords(19, 62);
         player = new Player(keyboard, spawn.getX(), spawn.getY());
-        Dimension size = new Dimension(this.width * this.scale, this.height * this.scale);
-        setPreferredSize(size);
+        level.add(player);
         frame = new JFrame();
         frame.setResizable(false);
         frame.add(this);
@@ -74,9 +79,6 @@ public class Rostiss extends Canvas implements Runnable {
         frame.setLocationRelativeTo(null);
         frame.setTitle(title + " - 0 ups, 0 fps");
         frame.setVisible(true);
-        addKeyListener(keyboard);
-        addMouseListener(mouse);
-        addMouseMotionListener(mouse);
         start();
     }
 
@@ -125,8 +127,7 @@ public class Rostiss extends Canvas implements Runnable {
 
     public void update() {
         keyboard.update();
-        player.update();
-        Level.spawn.update();
+        level.update();
     }
 
     public void render() {
@@ -136,10 +137,7 @@ public class Rostiss extends Canvas implements Runnable {
             return;
         }
         renderer.clear();
-        int dx = player.x - renderer.width / 2;
-        int dy = player.y - renderer.height / 2;
-        Level.spawn.render(dx, dy, renderer);
-        player.render(renderer);
+        level.render(player.x - renderer.width / 2, player.y - renderer.height / 2, renderer);
         arraycopy(renderer.pixels, 0, pixels, 0, pixels.length);
         Graphics g = bufferStrategy.getDrawGraphics();
         g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
@@ -147,15 +145,21 @@ public class Rostiss extends Canvas implements Runnable {
         bufferStrategy.show();
     }
 
-    public int getWindowWidth() {
+    public int getScale() {
+        return scale;
+    }
+
+    public int getWidth() {
         return width * scale;
     }
 
-    public int getWindowHeight() {
+    public int getHeight() {
         return height * scale;
     }
 
-    public static void main(String[] args) {
-        new Rostiss();
+    public static Rostiss getInstance() {
+        return instance;
     }
+
+    public static void main(String[] args) {}
 }

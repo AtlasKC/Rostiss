@@ -1,5 +1,6 @@
 package org.rostiss.game.entity.mob;
 
+import org.rostiss.game.Rostiss;
 import org.rostiss.game.entity.projectile.AtlasProjectile;
 import org.rostiss.game.graphics.Renderer2D;
 import org.rostiss.game.graphics.Sprite;
@@ -70,10 +71,10 @@ public class Player extends Mob {
 
     private void updateShooting() {
         if (Mouse.getButton() == 1 && rate <= 0) {
-            double dx = Mouse.getX() - 300 * 3 / 2;
-            double dy = Mouse.getY() - 300 / 16 * 9 * 3 / 2;
+            double dx = Mouse.getX() - Rostiss.getInstance().getWidth() / 2;
+            double dy = Mouse.getY() - Rostiss.getInstance().getHeight() / 2;
             double dir = atan2(dy, dx);
-            shoot(x, y, dir);
+            shoot(x - 8, y - 8, dir);
             rate = AtlasProjectile.FIRE_RATE;
         }
     }
