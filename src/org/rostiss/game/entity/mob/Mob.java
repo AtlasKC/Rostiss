@@ -4,10 +4,6 @@ import org.rostiss.game.entity.Entity;
 import org.rostiss.game.entity.projectile.AtlasProjectile;
 import org.rostiss.game.entity.projectile.Projectile;
 import org.rostiss.game.graphics.Sprite;
-import org.rostiss.game.level.Level;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * File: Mob.java
@@ -28,7 +24,6 @@ import java.util.List;
 public abstract class Mob extends Entity {
 
     protected Sprite sprite;
-    protected List<Projectile> projectiles = new ArrayList<>();
     protected int direction = 0;
     protected boolean moving = false;
 
@@ -59,7 +54,7 @@ public abstract class Mob extends Entity {
         for (int c = 0; c < 4; c++) {
             int xt = ((x + dx) + c % 2 * 14) / 16;
             int yt = ((y + dy) + c / 2 * 12 + 8) / 16;
-            if (Level.spawn.getTile(xt, yt).solid())
+            if (level.getTile(xt, yt).solid())
                 solid = true;
         }
         return solid;
@@ -67,7 +62,6 @@ public abstract class Mob extends Entity {
 
     protected void shoot(int x, int y, double direction) {
         Projectile projectile = new AtlasProjectile(x, y, direction);
-        projectiles.add(projectile);
-        Level.spawn.add(projectile);
+        level.add(projectile);
     }
 }

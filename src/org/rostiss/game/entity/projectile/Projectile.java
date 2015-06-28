@@ -21,7 +21,7 @@ import org.rostiss.game.graphics.Sprite;
 public abstract class Projectile extends Entity {
 
     protected final int xOrigin, yOrigin;
-    protected double angle, speed, rate, range, damage, dx, dy;
+    protected double angle, speed, range, damage, x, y, dx, dy;
     protected Sprite sprite;
 
     public Projectile(int xOrigin, int yOrigin, double angle) {

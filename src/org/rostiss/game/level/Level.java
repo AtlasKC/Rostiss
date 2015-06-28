@@ -1,6 +1,7 @@
 package org.rostiss.game.level;
 
 import org.rostiss.game.entity.Entity;
+import org.rostiss.game.entity.projectile.Projectile;
 import org.rostiss.game.graphics.Renderer2D;
 import org.rostiss.game.level.tile.Tile;
 
@@ -31,6 +32,7 @@ public class Level {
     protected int width, height;
 
     private List<Entity> entities = new ArrayList<>();
+    private List<Projectile> projectiles = new ArrayList<>();
 
     public Level(String file) {
         loadLevel(file);
@@ -48,8 +50,21 @@ public class Level {
         entities.add(entity);
     }
 
+    public void add(Projectile projectile) {
+        projectiles.add(projectile);
+    }
+
+    public void remove(Entity entity) {
+        entities.remove(entity);
+    }
+
+    public void remove(Projectile projectile) {
+        projectiles.remove(projectile);
+    }
+
     public void update() {
         entities.forEach(Entity::update);
+        projectiles.forEach(Projectile::update);
     }
 
     public void render(int xPos, int yPos, Renderer2D renderer) {
@@ -64,6 +79,7 @@ public class Level {
             }
         }
         entities.forEach(entity -> entity.render(renderer));
+        projectiles.forEach(projectile -> projectile.render(renderer));
     }
 
     public Tile getTile(int x, int y) {
@@ -74,6 +90,18 @@ public class Level {
         if (tiles[x + y * width] == Tile.brick1) return Tile.BRICK1;
         if (tiles[x + y * width] == Tile.brick2) return Tile.BRICK2;
         return Tile.VOID;
+    }
+
+    public List<Entity> getEntities() {
+        return entities;
+    }
+
+    public List<Projectile> getProjectiles() {
+        return projectiles;
+    }
+
+    public Projectile getProjectile(int index) {
+        return projectiles.get(index);
     }
 
     private void time() {

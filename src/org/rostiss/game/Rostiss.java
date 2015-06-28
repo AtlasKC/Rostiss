@@ -43,7 +43,7 @@ public class Rostiss extends Canvas implements Runnable {
     private BufferedImage image;
     private String title;
     private int[] pixels;
-    private static int scale, width, height;
+    private int scale, width, height;
     private boolean running = false;
 
     public Rostiss() {
@@ -114,7 +114,7 @@ public class Rostiss extends Canvas implements Runnable {
             frames++;
             if (System.currentTimeMillis() - timer > 1000) {
                 timer += 1000;
-                System.out.println(updates + " ups, " + frames + " fps");
+                //System.out.println(updates + " ups, " + frames + " fps");
                 frame.setTitle(title + " - " + updates + " ups, " + frames + " fps");
                 updates = 0;
                 frames = 0;
@@ -143,17 +143,15 @@ public class Rostiss extends Canvas implements Runnable {
         arraycopy(renderer.pixels, 0, pixels, 0, pixels.length);
         Graphics g = bufferStrategy.getDrawGraphics();
         g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
-        g.setColor(Color.red);
-        g.fillRoundRect(mouse.getX() - 24, mouse.getY() - 24, 48, 48, 48, 48);
         g.dispose();
         bufferStrategy.show();
     }
 
-    public static int getWindowWidth() {
+    public int getWindowWidth() {
         return width * scale;
     }
 
-    public static int getWindowHeight() {
+    public int getWindowHeight() {
         return height * scale;
     }
 

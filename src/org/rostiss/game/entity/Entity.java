@@ -26,7 +26,7 @@ public abstract class Entity {
     public int x, y;
 
     protected final Random random = new Random();
-    protected Level level;
+    protected Level level = Level.spawn;
 
     private boolean removed = false;
 

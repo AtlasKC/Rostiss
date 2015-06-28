@@ -23,13 +23,14 @@ import static java.lang.Math.*;
 
 public class AtlasProjectile extends Projectile {
 
+    public static final int FIRE_RATE = 12;
+
     public AtlasProjectile(int xOrigin, int yOrigin, double angle) {
         super(xOrigin, yOrigin, angle);
         sprite = Sprite.ATLAS;
         damage = 20;
         range = 200;
         speed = 4;
-        rate = 15;
         dx = speed * cos(this.angle);
         dy = speed * sin(this.angle);
     }
@@ -37,7 +38,7 @@ public class AtlasProjectile extends Projectile {
     protected void move() {
         x += dx;
         y += dy;
-        if(sqrt(abs(x - xOrigin) * abs(x - xOrigin) + abs(y - yOrigin) * abs(y - yOrigin)) > range)
+        if (sqrt(abs((x - xOrigin) * (x - xOrigin) + (y - yOrigin) * (y - yOrigin))) > range)
             remove();
     }
 
@@ -46,6 +47,6 @@ public class AtlasProjectile extends Projectile {
     }
 
     public void render(Renderer2D renderer) {
-        renderer.renderProjectile(x, y, this);
+        renderer.renderProjectile((int) x, (int) y, this);
     }
 }

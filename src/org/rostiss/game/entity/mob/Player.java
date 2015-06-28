@@ -1,5 +1,6 @@
 package org.rostiss.game.entity.mob;
 
+import org.rostiss.game.entity.projectile.AtlasProjectile;
 import org.rostiss.game.graphics.Renderer2D;
 import org.rostiss.game.graphics.Sprite;
 import org.rostiss.game.input.Keyboard;
@@ -27,7 +28,7 @@ public class Player extends Mob {
 
     private Keyboard keyboard;
     private Sprite sprite;
-    private int animation;
+    private int animation, rate = AtlasProjectile.FIRE_RATE;
     private boolean walking;
 
     public Player(Keyboard keyboard) {
@@ -42,6 +43,7 @@ public class Player extends Mob {
     }
 
     public void update() {
+        if(rate > 0) rate--;
         int dx = 0, dy = 0;
         animation++;
         if (animation >= 2147483646)
@@ -55,15 +57,24 @@ public class Player extends Mob {
             walking = true;
         } else
             walking = false;
+        updateProjectiles();
         updateShooting();
     }
 
+    private void updateProjectiles() {
+        for(int i = 0; i < level.getProjectiles().size(); i++) {
+            if(level.getProjectile(i).isRemoved())
+                level.remove(level.getProjectile(i));
+        }
+    }
+
     private void updateShooting() {
-        if (Mouse.getButton() == 1) {
+        if (Mouse.getButton() == 1 && rate <= 0) {
             double dx = Mouse.getX() - 300 * 3 / 2;
             double dy = Mouse.getY() - 300 / 16 * 9 * 3 / 2;
             double dir = atan2(dy, dx);
             shoot(x, y, dir);
+            rate = AtlasProjectile.FIRE_RATE;
         }
     }
 
