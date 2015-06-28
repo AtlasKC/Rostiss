@@ -24,6 +24,7 @@ public class SpriteSheet {
 
     public static SpriteSheet SPRITESHEET = new SpriteSheet("/sprites/spritesheet.png", 256);
     public static SpriteSheet LEVEL_SPAWN = new SpriteSheet("/sprites/spawn_level.png", 48);
+    public static SpriteSheet PROJECTILE_ATLAS = new SpriteSheet("/sprites/projectiles/atlas.png", 48);
 
     public final int SIZE;
     public int[] pixels;

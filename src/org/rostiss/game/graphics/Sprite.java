@@ -18,6 +18,7 @@ package org.rostiss.game.graphics;
 
 public class Sprite {
 
+    public static Sprite ATLAS = new Sprite(16, 0, 0, SpriteSheet.PROJECTILE_ATLAS);
     public static Sprite GRASS1 = new Sprite(16, 0, 0, SpriteSheet.LEVEL_SPAWN);
     public static Sprite GRASS2 = new Sprite(16, 1, 0, SpriteSheet.LEVEL_SPAWN);
     public static Sprite BRICK1 = new Sprite(16, 0, 1, SpriteSheet.LEVEL_SPAWN);

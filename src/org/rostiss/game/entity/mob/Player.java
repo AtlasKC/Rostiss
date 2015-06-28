@@ -3,6 +3,9 @@ package org.rostiss.game.entity.mob;
 import org.rostiss.game.graphics.Renderer2D;
 import org.rostiss.game.graphics.Sprite;
 import org.rostiss.game.input.Keyboard;
+import org.rostiss.game.input.Mouse;
+
+import static java.lang.Math.atan2;
 
 /**
  * File: Player.java
@@ -52,6 +55,16 @@ public class Player extends Mob {
             walking = true;
         } else
             walking = false;
+        updateShooting();
+    }
+
+    private void updateShooting() {
+        if (Mouse.getButton() == 1) {
+            double dx = Mouse.getX() - 300 * 3 / 2;
+            double dy = Mouse.getY() - 300 / 16 * 9 * 3 / 2;
+            double dir = atan2(dy, dx);
+            shoot(x, y, dir);
+        }
     }
 
     public void render(Renderer2D renderer) {

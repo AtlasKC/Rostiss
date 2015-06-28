@@ -1,7 +1,11 @@
 package org.rostiss.game.level;
 
+import org.rostiss.game.entity.Entity;
 import org.rostiss.game.graphics.Renderer2D;
 import org.rostiss.game.level.tile.Tile;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * File: Level.java
@@ -26,6 +30,8 @@ public class Level {
     protected int[] tiles;
     protected int width, height;
 
+    private List<Entity> entities = new ArrayList<>();
+
     public Level(String file) {
         loadLevel(file);
         generateLevel();
@@ -38,7 +44,12 @@ public class Level {
         generateLevel();
     }
 
+    public void add(Entity entity) {
+        entities.add(entity);
+    }
+
     public void update() {
+        entities.forEach(Entity::update);
     }
 
     public void render(int xPos, int yPos, Renderer2D renderer) {
@@ -52,6 +63,7 @@ public class Level {
                 getTile(x, y).render(x, y, renderer);
             }
         }
+        entities.forEach(entity -> entity.render(renderer));
     }
 
     public Tile getTile(int x, int y) {

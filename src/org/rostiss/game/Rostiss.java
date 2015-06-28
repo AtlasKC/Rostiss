@@ -34,9 +34,6 @@ import static java.lang.System.nanoTime;
 
 public class Rostiss extends Canvas implements Runnable {
 
-    public int scale, width, height;
-
-    private String title;
     private Renderer2D renderer;
     private Keyboard keyboard = new Keyboard();
     private Mouse mouse = new Mouse();
@@ -44,7 +41,9 @@ public class Rostiss extends Canvas implements Runnable {
     private Thread thread;
     private JFrame frame;
     private BufferedImage image;
+    private String title;
     private int[] pixels;
+    private static int scale, width, height;
     private boolean running = false;
 
     public Rostiss() {
@@ -127,6 +126,7 @@ public class Rostiss extends Canvas implements Runnable {
     public void update() {
         keyboard.update();
         player.update();
+        Level.spawn.update();
     }
 
     public void render() {
@@ -147,6 +147,14 @@ public class Rostiss extends Canvas implements Runnable {
         g.fillRoundRect(mouse.getX() - 24, mouse.getY() - 24, 48, 48, 48, 48);
         g.dispose();
         bufferStrategy.show();
+    }
+
+    public static int getWindowWidth() {
+        return width * scale;
+    }
+
+    public static int getWindowHeight() {
+        return height * scale;
     }
 
     public static void main(String[] args) {

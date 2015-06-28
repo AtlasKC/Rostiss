@@ -1,5 +1,6 @@
 package org.rostiss.game.graphics;
 
+import org.rostiss.game.entity.projectile.Projectile;
 import org.rostiss.game.level.tile.Tile;
 
 import java.util.Random;
@@ -70,6 +71,22 @@ public class Renderer2D {
                 if (worldX < -tile.sprite.SIZE || worldX >= width || worldY < 0 || worldY >= height) break;
                 if (worldX < 0) worldX = 0;
                 pixels[worldX + worldY * width] = tile.sprite.pixels[x + y * tile.sprite.SIZE];
+            }
+        }
+    }
+
+    public void renderProjectile(int xPos, int yPos, Projectile projectile) {
+        xPos -= xOffset;
+        yPos -= yOffset;
+        for (int y = 0; y < projectile.getSize(); y++) {
+            int worldY = yPos + y;
+            for (int x = 0; x < projectile.getSize(); x++) {
+                int worldX = xPos + x;
+                if (worldX < -projectile.getSize() || worldX >= width || worldY < 0 || worldY >= height) break;
+                if (worldX < 0) worldX = 0;
+                int color = projectile.getSprite().pixels[x + y * projectile.getSize()];
+                if (color != 0xFFFF00FF)
+                    pixels[worldX + worldY * width] = color;
             }
         }
     }
