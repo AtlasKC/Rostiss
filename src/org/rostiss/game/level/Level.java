@@ -67,6 +67,17 @@ public class Level {
         projectiles.forEach(Projectile::update);
     }
 
+    public boolean tileCollision(double x, double y, double dx, double dy, int size) {
+        boolean solid = false;
+        for (int c = 0; c < 4; c++) {
+            int xt = (((int) x + (int) dx) + c % 2 * size + size / 2) / 16;
+            int yt = (((int) y + (int) dy) + c / 2 * size + 4) / 16;
+            if (getTile(xt, yt).solid())
+                solid = true;
+        }
+        return solid;
+    }
+
     public void render(int xPos, int yPos, Renderer2D renderer) {
         renderer.setOffset(xPos, yPos);
         int x0 = xPos >> 4;
@@ -83,7 +94,7 @@ public class Level {
     }
 
     public Tile getTile(int x, int y) {
-        if(x < 0 || y < 0 || x >= width || y >= height) return Tile.VOID;
+        if (x < 0 || y < 0 || x >= width || y >= height) return Tile.VOID;
         if (tiles[x + y * width] == Tile.grass) return Tile.GRASS2;
         if (tiles[x + y * width] == Tile.water) return Tile.WATER;
         if (tiles[x + y * width] == Tile.rock) return Tile.ROCK;

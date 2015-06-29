@@ -36,8 +36,12 @@ public class AtlasProjectile extends Projectile {
     }
 
     protected void move() {
-        x += dx;
-        y += dy;
+        if(!level.tileCollision(x, y, dx, dy, 8)) {
+            x += dx;
+            y += dy;
+        }
+        else
+            //remove();
         if (sqrt(abs((x - xOrigin) * (x - xOrigin) + (y - yOrigin) * (y - yOrigin))) > range)
             remove();
     }
