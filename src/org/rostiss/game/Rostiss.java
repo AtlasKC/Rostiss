@@ -34,7 +34,7 @@ import static java.lang.System.nanoTime;
 
 public class Rostiss extends Canvas implements Runnable {
 
-    private static Rostiss instance = new Rostiss();
+    private static Rostiss instance;
     private Renderer2D renderer;
     private Keyboard keyboard = new Keyboard();
     private Mouse mouse = new Mouse();
@@ -56,6 +56,10 @@ public class Rostiss extends Canvas implements Runnable {
         this(title, 300, 300 / 16 * 9, 3);
     }
 
+    private Rostiss(String title, int width) {
+        this(title, width / 3, width / 3 / 16 * 9, 3);
+    }
+
     private Rostiss(String title, int width, int height, int scale) {
         this.width = width;
         this.height = height;
@@ -63,9 +67,6 @@ public class Rostiss extends Canvas implements Runnable {
         this.title = title;
         TileCoords spawn = new TileCoords(19, 62);
         setPreferredSize(new Dimension(this.width * this.scale, this.height * this.scale));
-        addKeyListener(keyboard);
-        addMouseListener(mouse);
-        addMouseMotionListener(mouse);
         image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
         renderer = new Renderer2D(width, height);
@@ -79,17 +80,20 @@ public class Rostiss extends Canvas implements Runnable {
         frame.setLocationRelativeTo(null);
         frame.setTitle(title + " - 0 ups, 0 fps");
         frame.setVisible(true);
+        addKeyListener(keyboard);
+        addMouseListener(mouse);
+        addMouseMotionListener(mouse);
         start();
     }
 
-    public synchronized void start() {
+    private synchronized void start() {
         requestFocus();
         running = true;
         thread = new Thread(this, "Display");
         thread.start();
     }
 
-    public synchronized void stop() {
+    private synchronized void stop() {
         running = false;
         try {
             thread.join();
@@ -116,7 +120,7 @@ public class Rostiss extends Canvas implements Runnable {
             frames++;
             if (System.currentTimeMillis() - timer > 1000) {
                 timer += 1000;
-                //System.out.println(updates + " ups, " + frames + " fps");
+                System.out.println(updates + " ups, " + frames + " fps");
                 frame.setTitle(title + " - " + updates + " ups, " + frames + " fps");
                 updates = 0;
                 frames = 0;
@@ -125,12 +129,12 @@ public class Rostiss extends Canvas implements Runnable {
         stop();
     }
 
-    public void update() {
+    private void update() {
         keyboard.update();
         level.update();
     }
 
-    public void render() {
+    private void render() {
         BufferStrategy bufferStrategy = getBufferStrategy();
         if (bufferStrategy == null) {
             createBufferStrategy(3);
@@ -158,8 +162,12 @@ public class Rostiss extends Canvas implements Runnable {
     }
 
     public static Rostiss getInstance() {
+        if (instance == null)
+            instance = new Rostiss("Rostiss 0.1.3-7 Beta", 900);
         return instance;
     }
 
-    public static void main(String[] args) {}
+    public static void main(String[] args) {
+        getInstance();
+    }
 }

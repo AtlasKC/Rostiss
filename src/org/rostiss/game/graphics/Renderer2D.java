@@ -23,20 +23,20 @@ import java.util.Random;
 
 public class Renderer2D {
 
-    public final int MAP_SIZE = 4;
-    public final int MAP_SIZE_MASK = MAP_SIZE - 1;
+    private final int MAP_SIZE = 4, MAP_SIZE_MASK = MAP_SIZE - 1;
     public int[] pixels;
-    public int[] tiles = new int[MAP_SIZE * MAP_SIZE];
-    public int width, height, xOffset, yOffset;
-
-    private Random random = new Random();
+    private int[] tiles = new int[MAP_SIZE * MAP_SIZE];
+    public int width;
+    public int height;
+    private int xOffset;
+    private int yOffset;
 
     public Renderer2D(int width, int height) {
         this.width = width;
         this.height = height;
         pixels = new int[width * height];
         for (int i = 0; i < MAP_SIZE * MAP_SIZE; i++)
-            tiles[i] = random.nextInt(0xFFFFFF);
+            tiles[i] = new Random().nextInt(0xFFFFFF);
         tiles[0] = 0;
     }
 

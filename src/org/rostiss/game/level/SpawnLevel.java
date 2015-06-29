@@ -19,6 +19,7 @@ import java.io.IOException;
  * is strictly forbidden unless prior written permission is obtained
  * from Rostiss Development.
  */
+@SuppressWarnings("SameParameterValue")
 public class SpawnLevel extends Level {
 
     public SpawnLevel(String file) {
