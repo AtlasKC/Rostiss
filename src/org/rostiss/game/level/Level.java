@@ -115,12 +115,9 @@ public class Level {
         return projectiles.get(index);
     }
 
-    private void time() {
-    }
+    private void time() {}
 
-    protected void generateLevel() {
-    }
+    protected void generateLevel() {}
 
-    protected void loadLevel(String file) {
-    }
+    protected void loadLevel(String file) {}
 }

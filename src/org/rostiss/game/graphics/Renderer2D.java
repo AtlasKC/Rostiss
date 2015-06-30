@@ -40,6 +40,21 @@ public class Renderer2D {
         tiles[0] = 0;
     }
 
+    public void renderSprite(int dx, int dy, Sprite sprite, boolean fixed) {
+        if (fixed) {
+            dx -= xOffset;
+            dy -= yOffset;
+        }
+        for (int y = 0; y < sprite.getHeight(); y++) {
+            int worldY = y + dy;
+            for (int x = 0; x < sprite.getWidth(); x++) {
+                int worldX = x + dx;
+                if(worldX < 0 || worldX >= width || worldY < 0 || worldY >= height) continue;
+                pixels[worldX + worldY * width] = sprite.pixels[x + y * sprite.getWidth()];
+            }
+        }
+    }
+
     public void renderPlayer(int xPos, int yPos, Sprite sprite, boolean reflectX) {
         xPos -= xOffset;
         yPos -= yOffset;
@@ -57,21 +72,6 @@ public class Renderer2D {
                     color = sprite.pixels[x + y * sprite.SIZE];
                 if (color != 0xFFFF00FF)
                     pixels[worldX + worldY * width] = color;
-            }
-        }
-    }
-
-    public void renderSprite(int dx, int dy, Sprite sprite, boolean fixed) {
-        if (fixed) {
-            dx -= xOffset;
-            dy -= yOffset;
-        }
-        for (int y = 0; y < sprite.getHeight(); y++) {
-            int worldY = y + dy;
-            for (int x = 0; x < sprite.getWidth(); x++) {
-                int worldX = x + dx;
-                if(worldX < 0 || worldX >= width || worldY < 0 || worldY >= height) continue;
-                pixels[x + y * width] = sprite.pixels[x + y * sprite.getWidth()];
             }
         }
     }

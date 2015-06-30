@@ -1,5 +1,6 @@
 package org.rostiss.game.entity.projectile;
 
+import org.rostiss.game.entity.particle.Particle;
 import org.rostiss.game.graphics.Renderer2D;
 import org.rostiss.game.graphics.Sprite;
 
@@ -40,8 +41,12 @@ public class AtlasProjectile extends Projectile {
             x += dx;
             y += dy;
         }
-        else
-            //remove();
+        else {
+            remove();
+            Particle p = new Particle((int)x, (int)y, 50, 50);
+            p.getParticles().forEach(level::add);
+            System.out.println(level.getEntities().size());
+        }
         if (sqrt(abs((x - xOrigin) * (x - xOrigin) + (y - yOrigin) * (y - yOrigin))) > range)
             remove();
     }

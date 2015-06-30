@@ -25,6 +25,7 @@ import java.util.List;
 
 public class Particle extends Entity {
 
+    protected double dx, dy, xx, yy;
     private List<Particle> particles = new ArrayList<>();
     private Sprite sprite;
     private int time;
@@ -34,18 +35,30 @@ public class Particle extends Entity {
         this.y = y;
         this.time = time;
         sprite = Sprite.PARTICLE;
-        particles.add(this);
+        xx = x;
+        yy = y;
+        this.dx = random.nextGaussian();
+        this.dy = random.nextGaussian();
     }
 
     public Particle(int x, int y, int time, int amount) {
         this(x, y, time);
-        for (int i = 0; i < amount - 1; i++)
+        for (int i = 0; i < amount - 1; i++) {
             particles.add(new Particle(x, y, time));
+        }
+        particles.add(this);
     }
 
-    public void update() {}
+    public void update() {
+        this.xx += dx;
+        this.yy += dy;
+        x = (int)xx;
+        y = (int)yy;
+    }
+
+    public List<Particle> getParticles() { return particles; }
 
     public void render(Renderer2D renderer) {
-        particles.forEach(particle -> renderer.renderSprite(x, y, sprite, false));
+        renderer.renderSprite((int)xx, (int)yy, sprite, true);
     }
 }
