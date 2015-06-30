@@ -2,6 +2,7 @@ package org.rostiss.game;
 
 import org.rostiss.game.entity.mob.Player;
 import org.rostiss.game.graphics.Renderer2D;
+import org.rostiss.game.graphics.Sprite;
 import org.rostiss.game.input.Keyboard;
 import org.rostiss.game.input.Mouse;
 import org.rostiss.game.level.Level;
@@ -142,6 +143,7 @@ public class Rostiss extends Canvas implements Runnable {
         }
         renderer.clear();
         level.render(player.x - renderer.width / 2, player.y - renderer.height / 2, renderer);
+        renderer.renderSprite(0, 0, new Sprite(80, 80, 0xFF), false);
         arraycopy(renderer.pixels, 0, pixels, 0, pixels.length);
         Graphics g = bufferStrategy.getDrawGraphics();
         g.drawImage(image, 0, 0, getWidth(), getHeight(), null);

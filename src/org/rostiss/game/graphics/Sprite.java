@@ -26,6 +26,7 @@ public class Sprite {
     public static Sprite ROCK = new Sprite(16, 1, 1, SpriteSheet.LEVEL_SPAWN);
     public static Sprite WATER = new Sprite(16, 2, 0, SpriteSheet.LEVEL_SPAWN);
     public static Sprite VOID = new Sprite(16, 0x7700FF);
+    public static Sprite PARTICLE = new Sprite(3, 0xAAAAAA);
     public static Sprite PLAYER_FN = new Sprite(32, 1, 7, SpriteSheet.SPRITESHEET);
     public static Sprite PLAYER_FL = new Sprite(32, 1, 6, SpriteSheet.SPRITESHEET);
     public static Sprite PLAYER_FR = new Sprite(32, 1, 5, SpriteSheet.SPRITESHEET);
@@ -39,18 +40,30 @@ public class Sprite {
     public int[] pixels;
     public final int SIZE;
 
-    private int x, y;
+    private int x, y, width, height;
     private SpriteSheet spriteSheet;
 
     public Sprite(int size, int color) {
         SIZE = size;
+        this.width = SIZE;
+        this.height = SIZE;
         pixels = new int[SIZE * SIZE];
         setColor(color);
     }
 
+    public Sprite(int width, int height, int color) {
+        this.SIZE = -1;
+        this.width = width;
+        this.height = height;
+        pixels = new int[width * height];
+        setColor(color);
+    }
+
     public Sprite(int size, int x, int y, SpriteSheet spriteSheet) {
-        SIZE = size;
-        pixels = new int[SIZE * SIZE];
+        this.SIZE = size;
+        this.width = SIZE;
+        this.height = SIZE;
+        this.pixels = new int[SIZE * SIZE];
         this.x = x * size;
         this.y = y * size;
         this.spriteSheet = spriteSheet;
@@ -66,5 +79,13 @@ public class Sprite {
         for(int y = 0; y < SIZE; y++)
             for(int x = 0; x < SIZE; x++)
                 pixels[x + y * SIZE] = spriteSheet.pixels[(x + this.x) + (y + this.y) * spriteSheet.SIZE];
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
     }
 }

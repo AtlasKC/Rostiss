@@ -61,6 +61,21 @@ public class Renderer2D {
         }
     }
 
+    public void renderSprite(int dx, int dy, Sprite sprite, boolean fixed) {
+        if (fixed) {
+            dx -= xOffset;
+            dy -= yOffset;
+        }
+        for (int y = 0; y < sprite.getHeight(); y++) {
+            int worldY = y + dy;
+            for (int x = 0; x < sprite.getWidth(); x++) {
+                int worldX = x + dx;
+                if(worldX < 0 || worldX >= width || worldY < 0 || worldY >= height) continue;
+                pixels[x + y * width] = sprite.pixels[x + y * sprite.getWidth()];
+            }
+        }
+    }
+
     public void renderTile(int xPos, int yPos, Tile tile) {
         xPos -= xOffset;
         yPos -= yOffset;
