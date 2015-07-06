@@ -1,6 +1,7 @@
 package org.rostiss.game.level;
 
 import org.rostiss.game.entity.Entity;
+import org.rostiss.game.entity.particle.Particle;
 import org.rostiss.game.entity.projectile.Projectile;
 import org.rostiss.game.graphics.Renderer2D;
 import org.rostiss.game.level.tile.Tile;
@@ -31,8 +32,9 @@ public class Level {
     protected int[] tiles;
     protected int width, height;
 
-    private List<Entity> entities = new ArrayList<>();
     private List<Projectile> projectiles = new ArrayList<>();
+    private List<Particle> particles = new ArrayList<>();
+    private List<Entity> entities = new ArrayList<>();
 
     public Level(String file) {
         loadLevel(file);
@@ -47,33 +49,43 @@ public class Level {
     }
 
     public void add(Entity entity) {
-        entities.add(entity);
+    	entity.setLevel(this);
+    	if(entity instanceof Projectile)
+    		projectiles.add((Projectile)entity);
+    	else if(entity instanceof Particle)
+    		particles.add((Particle)entity);
+    	else
+    		entities.add(entity);
     }
-
-    public void add(Projectile projectile) {
-        projectiles.add(projectile);
-    }
-
-    public void remove(Entity entity) {
-        entities.remove(entity);
-    }
-
-    public void remove(Projectile projectile) {
-        projectiles.remove(projectile);
+    
+    private void remove() {
+    	for(int i = 0; i < projectiles.size(); i++) {
+        	if(projectiles.get(i).isRemoved())
+        		projectiles.remove(projectiles.get(i));
+        }
+    	for(int i = 0; i < particles.size(); i++) {
+        	if(particles.get(i).isRemoved())
+        		particles.remove(particles.get(i));
+        }
+    	for(int i = 0; i < entities.size(); i++) {
+        	if(entities.get(i).isRemoved())
+        		entities.remove(entities.get(i));
+        }
     }
 
     public void update() {
+    	projectiles.forEach(Projectile::update);
+    	particles.forEach(Particle::update);
         entities.forEach(Entity::update);
-        projectiles.forEach(Projectile::update);
+        remove();
     }
 
-    public boolean tileCollision(double x, double y, double dx, double dy, int size) {
+    public boolean tileCollision(int x, int y, int size, int xOffset, int yOffset) {
         boolean solid = false;
         for (int c = 0; c < 4; c++) {
-            int xt = (((int) x + (int) dx) + c % 2 * size + size / 2) / 16;
-            int yt = (((int) y + (int) dy) + c / 2 * size + 4) / 16;
-            if (getTile(xt, yt).solid())
-                solid = true;
+            int xt = ((x + size) - c % 2 * size + xOffset) >> 4;
+            int yt = ((y + size) - c / 2 * size + yOffset) >> 4;
+            if (getTile(xt, yt).solid()) solid = true;
         }
         return solid;
     }
@@ -84,13 +96,12 @@ public class Level {
         int x1 = (xPos + renderer.width + 16) >> 4;
         int y0 = yPos >> 4;
         int y1 = (yPos + renderer.height + 16) >> 4;
-        for (int y = y0; y < y1; y++) {
-            for (int x = x0; x < x1; x++) {
+        for (int y = y0; y < y1; y++)
+            for (int x = x0; x < x1; x++)
                 getTile(x, y).render(x, y, renderer);
-            }
-        }
         entities.forEach(entity -> entity.render(renderer));
         projectiles.forEach(projectile -> projectile.render(renderer));
+        particles.forEach(particle -> particle.render(renderer));
     }
 
     public Tile getTile(int x, int y) {
@@ -101,18 +112,6 @@ public class Level {
         if (tiles[x + y * width] == Tile.brick1) return Tile.BRICK1;
         if (tiles[x + y * width] == Tile.brick2) return Tile.BRICK2;
         return Tile.VOID;
-    }
-
-    public List<Entity> getEntities() {
-        return entities;
-    }
-
-    public List<Projectile> getProjectiles() {
-        return projectiles;
-    }
-
-    public Projectile getProjectile(int index) {
-        return projectiles.get(index);
     }
 
     private void time() {}

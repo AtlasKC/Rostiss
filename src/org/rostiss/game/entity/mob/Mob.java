@@ -27,8 +27,7 @@ public abstract class Mob extends Entity {
     protected int direction = 0;
     protected boolean moving = false;
 
-    public void update() {
-    }
+    public void update() {}
 
     public void move(int dx, int dy) {
         if (dx != 0 && dy != 0) {
@@ -46,8 +45,7 @@ public abstract class Mob extends Entity {
         }
     }
 
-    public void render() {
-    }
+    public void render() {}
 
     private boolean collision(int dx, int dy) {
         boolean solid = false;

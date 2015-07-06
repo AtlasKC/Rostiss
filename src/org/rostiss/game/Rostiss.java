@@ -6,6 +6,8 @@ import org.rostiss.game.input.Keyboard;
 import org.rostiss.game.input.Mouse;
 import org.rostiss.game.level.Level;
 import org.rostiss.game.level.TileCoords;
+import org.rostiss.game.net.Client;
+import org.rostiss.game.net.Server;
 
 import javax.swing.*;
 import java.awt.*;
@@ -47,6 +49,10 @@ public class Rostiss extends Canvas implements Runnable {
     private int[] pixels;
     private int scale, width, height;
     private boolean running = false;
+    
+    //Multiplayer stuff
+    public Client client;
+    public Server server;
 
     private Rostiss() {
         this("Rostiss 0.1.3-7 Beta");
@@ -71,7 +77,7 @@ public class Rostiss extends Canvas implements Runnable {
         pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
         renderer = new Renderer2D(width, height);
         player = new Player(keyboard, spawn.getX(), spawn.getY());
-        //level.add(player);
+        player.setLevel(Level.spawn);
         frame = new JFrame();
         frame.setResizable(false);
         frame.add(this);
@@ -89,8 +95,15 @@ public class Rostiss extends Canvas implements Runnable {
     private synchronized void start() {
         requestFocus();
         running = true;
-        thread = new Thread(this, "Display");
+        thread = new Thread(this);
         thread.start();
+        if(JOptionPane.showConfirmDialog(this, "Start a server?") == 0) {
+        	server = new Server(this);
+        	server.start();
+        }
+        client = new Client(this, "localhost");
+        client.start();
+        client.sendData("ping".getBytes());
     }
 
     private synchronized void stop() {
@@ -120,7 +133,7 @@ public class Rostiss extends Canvas implements Runnable {
             frames++;
             if (System.currentTimeMillis() - timer > 1000) {
                 timer += 1000;
-                System.out.println(updates + " ups, " + frames + " fps");
+                //System.out.println(updates + " ups, " + frames + " fps");
                 frame.setTitle(title + " - " + updates + " ups, " + frames + " fps");
                 updates = 0;
                 frames = 0;

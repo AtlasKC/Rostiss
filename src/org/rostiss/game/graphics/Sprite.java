@@ -26,7 +26,7 @@ public class Sprite {
     public static Sprite ROCK = new Sprite(16, 1, 1, SpriteSheet.LEVEL_SPAWN);
     public static Sprite WATER = new Sprite(16, 2, 0, SpriteSheet.LEVEL_SPAWN);
     public static Sprite VOID = new Sprite(16, 0x7700FF);
-    public static Sprite PARTICLE = new Sprite(3, 0xFF00FF);
+    public static Sprite PARTICLE = new Sprite(3, 0x111111);
     public static Sprite PLAYER_FN = new Sprite(32, 1, 7, SpriteSheet.SPRITESHEET);
     public static Sprite PLAYER_FL = new Sprite(32, 1, 6, SpriteSheet.SPRITESHEET);
     public static Sprite PLAYER_FR = new Sprite(32, 1, 5, SpriteSheet.SPRITESHEET);

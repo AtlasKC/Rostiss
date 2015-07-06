@@ -58,23 +58,15 @@ public class Player extends Mob {
             walking = true;
         } else
             walking = false;
-        updateProjectiles();
         updateShooting();
-    }
-
-    private void updateProjectiles() {
-        for(int i = 0; i < level.getProjectiles().size(); i++) {
-            if(level.getProjectile(i).isRemoved())
-                level.remove(level.getProjectile(i));
-        }
     }
 
     private void updateShooting() {
         if (Mouse.getButton() == 1 && rate <= 0) {
             double dx = Mouse.getX() - Rostiss.getInstance().getWidth() / 2;
             double dy = Mouse.getY() - Rostiss.getInstance().getHeight() / 2;
-            double dir = atan2(dy, dx);
-            shoot(x - 8, y - 8, dir);
+            double dir = atan2(dy - 24, dx - 24);
+            shoot(x, y, dir);
             rate = AtlasProjectile.FIRE_RATE;
         }
     }
