@@ -50,7 +50,7 @@ public class Rostiss extends Canvas implements Runnable {
     private int scale, width, height;
     private boolean running = false;
     
-    //Multiplayer stuff
+    //Multiplayer
     public Client client;
     public Server server;
 
