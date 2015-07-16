@@ -2,8 +2,10 @@ package org.rostiss.game.entity.mob;
 
 import org.rostiss.game.Rostiss;
 import org.rostiss.game.entity.projectile.AtlasProjectile;
+import org.rostiss.game.graphics.AnimatedSprite;
 import org.rostiss.game.graphics.Renderer2D;
 import org.rostiss.game.graphics.Sprite;
+import org.rostiss.game.graphics.SpriteSheet;
 import org.rostiss.game.input.Keyboard;
 import org.rostiss.game.input.Mouse;
 
@@ -29,6 +31,11 @@ public class Player extends Mob {
 
     private Keyboard keyboard;
     private Sprite sprite;
+    private AnimatedSprite up = new AnimatedSprite(SpriteSheet.UP, 32, 32, 3);
+    private AnimatedSprite down = new AnimatedSprite(SpriteSheet.DOWN, 32, 32, 3);
+    private AnimatedSprite left = new AnimatedSprite(SpriteSheet.LEFT, 32, 32, 3);
+    private AnimatedSprite right = new AnimatedSprite(SpriteSheet.RIGHT, 32, 32, 3);
+    private AnimatedSprite animatedSprite = null;
     private int animation, rate = AtlasProjectile.FIRE_RATE;
     private boolean walking;
 
@@ -40,19 +47,34 @@ public class Player extends Mob {
         this.keyboard = keyboard;
         this.x = x;
         this.y = y;
-        this.sprite = Sprite.PLAYER_FN;
+        this.animatedSprite = down;
+        this.sprite = animatedSprite.getSprite();
     }
 
     public void update() {
-        if(rate > 0) rate--;
+        if(walking) animatedSprite.update();
+        else animatedSprite.setFrame(0);
+        if (rate > 0) rate--;
         int dx = 0, dy = 0;
         animation++;
         if (animation >= 2147483646)
             animation = 0;
-        if (keyboard.up) dy--;
-        if (keyboard.down) dy++;
-        if (keyboard.left) dx--;
-        if (keyboard.right) dx++;
+        if (keyboard.up) {
+            dy--;
+            animatedSprite = up;
+        }
+        if (keyboard.down) {
+            dy++;
+            animatedSprite = down;
+        }
+        if (keyboard.left) {
+            dx--;
+            animatedSprite = left;
+        }
+        if (keyboard.right) {
+            dx++;
+            animatedSprite = right;
+        }
         if (dx != 0 || dy != 0) {
             move(dx, dy);
             walking = true;
@@ -72,43 +94,7 @@ public class Player extends Mob {
     }
 
     public void render(Renderer2D renderer) {
-        if (direction == 0) {
-            sprite = Sprite.PLAYER_FN;
-            if (walking) {
-                if (animation % 20 >= 10)
-                    sprite = Sprite.PLAYER_FL;
-                else
-                    sprite = Sprite.PLAYER_FR;
-            }
-        }
-        if (direction == 1) {
-            sprite = Sprite.PLAYER_SN;
-            if (walking) {
-                if (animation % 20 >= 10)
-                    sprite = Sprite.PLAYER_SL;
-                else
-                    sprite = Sprite.PLAYER_SR;
-            }
-        }
-        if (direction == 2) {
-            sprite = Sprite.PLAYER_BN;
-            if (walking) {
-                if (animation % 20 >= 10)
-                    sprite = Sprite.PLAYER_BL;
-                else
-                    sprite = Sprite.PLAYER_BR;
-            }
-        }
-        if (direction == 3) {
-            sprite = Sprite.PLAYER_SN;
-            if (walking) {
-                if (animation % 20 >= 10)
-                    sprite = Sprite.PLAYER_SL;
-                else
-                    sprite = Sprite.PLAYER_SR;
-            }
-            renderer.renderPlayer(x - 8, y - 8, sprite, true);
-        } else
-            renderer.renderPlayer(x - 8, y - 8, sprite, false);
+        sprite = animatedSprite.getSprite();
+        renderer.renderPlayer(x - 8, y - 8, sprite, false);
     }
 }

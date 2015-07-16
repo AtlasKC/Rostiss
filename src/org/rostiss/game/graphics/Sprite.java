@@ -41,7 +41,7 @@ public class Sprite {
     public final int SIZE;
 
     private int x, y, width, height;
-    private SpriteSheet spriteSheet;
+    protected SpriteSheet spriteSheet;
 
     public Sprite(int size, int color) {
         SIZE = size;
@@ -59,6 +59,16 @@ public class Sprite {
         setColor(color);
     }
 
+    protected Sprite(SpriteSheet spriteSheet, int width, int height) {
+        if(width == height) this.SIZE = width;
+        else this.SIZE = -1;
+        this.width = width;
+        this.height = height;
+        //this.pixels = new int[width * height];
+        this.spriteSheet = spriteSheet;
+        //load();
+    }
+
     public Sprite(int size, int x, int y, SpriteSheet spriteSheet) {
         this.SIZE = size;
         this.width = SIZE;
@@ -68,6 +78,14 @@ public class Sprite {
         this.y = y * size;
         this.spriteSheet = spriteSheet;
         load();
+    }
+
+    public Sprite(int[] pixels, int width, int height) {
+        if(width == height) this.SIZE = width;
+        else this.SIZE = -1;
+        this.width = width;
+        this.height = height;
+        this.pixels = pixels;
     }
 
     private void setColor(int color) {

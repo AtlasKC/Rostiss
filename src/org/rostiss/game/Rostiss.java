@@ -2,12 +2,11 @@ package org.rostiss.game;
 
 import org.rostiss.game.entity.mob.Player;
 import org.rostiss.game.graphics.Renderer2D;
+import org.rostiss.game.graphics.SpriteSheet;
 import org.rostiss.game.input.Keyboard;
 import org.rostiss.game.input.Mouse;
 import org.rostiss.game.level.Level;
 import org.rostiss.game.level.TileCoords;
-import org.rostiss.game.net.Client;
-import org.rostiss.game.net.Server;
 
 import javax.swing.*;
 import java.awt.*;
@@ -51,8 +50,8 @@ public class Rostiss extends Canvas implements Runnable {
     private boolean running = false;
     
     //Multiplayer stuff
-    public Client client;
-    public Server server;
+//    public Client client;
+//    public Server server;
 
     private Rostiss() {
         this("Rostiss 0.1.3-7 Beta");
@@ -97,13 +96,13 @@ public class Rostiss extends Canvas implements Runnable {
         running = true;
         thread = new Thread(this);
         thread.start();
-        if(JOptionPane.showConfirmDialog(this, "Start a server?") == 0) {
-        	server = new Server(this);
-        	server.start();
-        }
-        client = new Client(this, "localhost");
-        client.start();
-        client.sendData("ping".getBytes());
+//        if(JOptionPane.showConfirmDialog(this, "Start a server?") == 0) {
+//        	server = new Server(this);
+//        	server.start();
+//        }
+//        client = new Client(this, "localhost");
+//        client.start();
+//        client.sendData("ping".getBytes());
     }
 
     private synchronized void stop() {
@@ -157,6 +156,7 @@ public class Rostiss extends Canvas implements Runnable {
         renderer.clear();
         level.render(player.x - renderer.width / 2, player.y - renderer.height / 2, renderer);
         player.render(renderer);
+        renderer.renderSpriteSheet(0, 0, SpriteSheet.DOWN, false);
         arraycopy(renderer.pixels, 0, pixels, 0, pixels.length);
         Graphics g = bufferStrategy.getDrawGraphics();
         g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
@@ -178,7 +178,7 @@ public class Rostiss extends Canvas implements Runnable {
 
     public static Rostiss getInstance() {
         if (instance == null)
-            instance = new Rostiss("Rostiss 0.1.3-7 Beta", 900);
+            instance = new Rostiss("Rostiss 0.3.7-4 Beta", 900);
         return instance;
     }
 

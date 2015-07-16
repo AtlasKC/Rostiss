@@ -40,6 +40,21 @@ public class Renderer2D {
         tiles[0] = 0;
     }
 
+    public void renderSpriteSheet(int dx, int dy, SpriteSheet spriteSheet, boolean fixed) {
+        if (fixed) {
+            dx -= xOffset;
+            dy -= yOffset;
+        }
+        for (int y = 0; y < spriteSheet.HEIGHT; y++) {
+            int worldY = y + dy;
+            for (int x = 0; x < spriteSheet.WIDTH; x++) {
+                int worldX = x + dx;
+                if(worldX < 0 || worldX >= width || worldY < 0 || worldY >= height) continue;
+                pixels[worldX + worldY * width] = spriteSheet.pixels[x + y * spriteSheet.WIDTH];
+            }
+        }
+    }
+
     public void renderSprite(int dx, int dy, Sprite sprite, boolean fixed) {
         if (fixed) {
             dx -= xOffset;
