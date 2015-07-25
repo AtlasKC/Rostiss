@@ -1,5 +1,7 @@
 package org.rostiss.game.graphics;
 
+import org.rostiss.game.entity.mob.Chaser;
+import org.rostiss.game.entity.mob.Mob;
 import org.rostiss.game.entity.projectile.Projectile;
 import org.rostiss.game.level.tile.Tile;
 
@@ -70,7 +72,25 @@ public class Renderer2D {
         }
     }
 
-    public void renderPlayer(int xPos, int yPos, Sprite sprite, boolean reflectX) {
+    public void renderMob(int xPos, int yPos, Mob mob) {
+        xPos -= xOffset;
+        yPos -= yOffset;
+        for (int y = 0; y < mob.getSprite().SIZE; y++) {
+            int worldY = yPos + y;
+            for (int x = 0; x < mob.getSprite().SIZE; x++) {
+                int worldX = xPos + x;
+                if (worldX < -mob.getSprite().SIZE || worldX >= width || worldY < 0 || worldY >= height) break;
+                if (worldX < 0) worldX = 0;
+                int color = mob.getSprite().pixels[x + y * mob.getSprite().SIZE];
+                if(mob instanceof Chaser && color == 0xFFFFB08E)
+                    color = 0xFF775243;
+                if (color != 0xFFFF00FF)
+                    pixels[worldX + worldY * width] = color;
+            }
+        }
+    }
+
+    public void renderMob(int xPos, int yPos, Sprite sprite, boolean reflectX) {
         xPos -= xOffset;
         yPos -= yOffset;
         for (int y = 0; y < sprite.SIZE; y++) {

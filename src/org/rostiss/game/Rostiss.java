@@ -2,7 +2,6 @@ package org.rostiss.game;
 
 import org.rostiss.game.entity.mob.Player;
 import org.rostiss.game.graphics.Renderer2D;
-import org.rostiss.game.graphics.SpriteSheet;
 import org.rostiss.game.input.Keyboard;
 import org.rostiss.game.input.Mouse;
 import org.rostiss.game.level.Level;
@@ -77,6 +76,7 @@ public class Rostiss extends Canvas implements Runnable {
         renderer = new Renderer2D(width, height);
         player = new Player(keyboard, spawn.getX(), spawn.getY());
         player.setLevel(Level.spawn);
+        level.add(player);
         frame = new JFrame();
         frame.setResizable(false);
         frame.add(this);
@@ -144,7 +144,6 @@ public class Rostiss extends Canvas implements Runnable {
     private void update() {
         keyboard.update();
         level.update();
-        player.update();
     }
 
     private void render() {
@@ -154,9 +153,7 @@ public class Rostiss extends Canvas implements Runnable {
             return;
         }
         renderer.clear();
-        level.render(player.x - renderer.width / 2, player.y - renderer.height / 2, renderer);
-        player.render(renderer);
-        renderer.renderSpriteSheet(0, 0, SpriteSheet.DOWN, false);
+        level.render((int)(player.getX() - renderer.width / 2), (int)(player.getY() - renderer.height / 2), renderer);
         arraycopy(renderer.pixels, 0, pixels, 0, pixels.length);
         Graphics g = bufferStrategy.getDrawGraphics();
         g.drawImage(image, 0, 0, getWidth(), getHeight(), null);

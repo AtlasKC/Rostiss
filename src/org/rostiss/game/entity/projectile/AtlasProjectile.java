@@ -22,7 +22,7 @@ public class AtlasProjectile extends Projectile {
 
 	public static final int FIRE_RATE = 12;
 
-	public AtlasProjectile(int xOrigin, int yOrigin, double angle) {
+	public AtlasProjectile(double xOrigin, double yOrigin, double angle) {
 		super(xOrigin, yOrigin, angle);
 		sprite = Sprite.ATLAS;
 		damage = 20;

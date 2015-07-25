@@ -26,10 +26,15 @@ public class SpriteSheet {
     public static SpriteSheet LEVEL_SPAWN = new SpriteSheet("/sprites/spawn_level.png", 48);
     public static SpriteSheet PROJECTILE_ATLAS = new SpriteSheet("/sprites/projectiles/atlas.png", 48);
     public static SpriteSheet PLAYER = new SpriteSheet("/sprites/player.png", 128, 96);
-    public static SpriteSheet UP = new SpriteSheet(PLAYER, 1, 0, 1, 3, 32);
-    public static SpriteSheet DOWN = new SpriteSheet(PLAYER, 0, 0, 1, 3, 32);
-    public static SpriteSheet LEFT = new SpriteSheet(PLAYER, 3, 0, 1, 3, 32);
-    public static SpriteSheet RIGHT = new SpriteSheet(PLAYER, 2, 0, 1, 3, 32);
+    public static SpriteSheet TEST = new SpriteSheet("/sprites/test_mob.png", 128, 96);
+    public static SpriteSheet PLAYER_UP = new SpriteSheet(PLAYER, 1, 0, 1, 3, 32);
+    public static SpriteSheet PLAYER_DOWN = new SpriteSheet(PLAYER, 0, 0, 1, 3, 32);
+    public static SpriteSheet PLAYER_LEFT = new SpriteSheet(PLAYER, 3, 0, 1, 3, 32);
+    public static SpriteSheet PLAYER_RIGHT = new SpriteSheet(PLAYER, 2, 0, 1, 3, 32);
+    public static SpriteSheet TEST_UP = new SpriteSheet(TEST, 1, 0, 1, 3, 32);
+    public static SpriteSheet TEST_DOWN = new SpriteSheet(TEST, 0, 0, 1, 3, 32);
+    public static SpriteSheet TEST_LEFT = new SpriteSheet(TEST, 3, 0, 1, 3, 32);
+    public static SpriteSheet TEST_RIGHT = new SpriteSheet(TEST, 2, 0, 1, 3, 32);
 
     public final int SIZE, WIDTH, HEIGHT;
     public int[] pixels;

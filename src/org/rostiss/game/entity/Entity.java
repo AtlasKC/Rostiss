@@ -1,6 +1,7 @@
 package org.rostiss.game.entity;
 
 import org.rostiss.game.graphics.Renderer2D;
+import org.rostiss.game.graphics.Sprite;
 import org.rostiss.game.level.Level;
 
 import java.util.Random;
@@ -17,23 +18,44 @@ import java.util.Random;
  * obtained from Rostiss Development.
  */
 
-public abstract class Entity {
-
-	public int x, y;
+public class Entity {
 
 	protected final Random random = new Random();
 	protected Level level;
+	protected Sprite sprite;
+	protected double x, y;
 
 	private boolean removed = false;
 
-	public void update() {
+	public Entity() {}
+
+	public Entity(int x, int y, Sprite sprite) {
+		this.x = x;
+		this.y = y;
+		this.sprite = sprite;
 	}
 
+	public void update() {}
+
 	public void render(Renderer2D renderer) {
+		if(sprite != null)
+			renderer.renderSprite((int)x, (int)y, sprite, true);
 	}
 
 	public void remove() {
 		removed = true;
+	}
+
+	public Sprite getSprite() {
+		return sprite;
+	}
+
+	public double getX() {
+		return x;
+	}
+
+	public double getY() {
+		return y;
 	}
 	
 	public void setLevel(Level level) {

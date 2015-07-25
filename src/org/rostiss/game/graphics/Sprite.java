@@ -27,15 +27,6 @@ public class Sprite {
     public static Sprite WATER = new Sprite(16, 2, 0, SpriteSheet.LEVEL_SPAWN);
     public static Sprite VOID = new Sprite(16, 0x7700FF);
     public static Sprite PARTICLE = new Sprite(3, 0x111111);
-    public static Sprite PLAYER_FN = new Sprite(32, 1, 7, SpriteSheet.SPRITESHEET);
-    public static Sprite PLAYER_FL = new Sprite(32, 1, 6, SpriteSheet.SPRITESHEET);
-    public static Sprite PLAYER_FR = new Sprite(32, 1, 5, SpriteSheet.SPRITESHEET);
-    public static Sprite PLAYER_BN = new Sprite(32, 0, 7, SpriteSheet.SPRITESHEET);
-    public static Sprite PLAYER_BL = new Sprite(32, 0, 6, SpriteSheet.SPRITESHEET);
-    public static Sprite PLAYER_BR = new Sprite(32, 0, 5, SpriteSheet.SPRITESHEET);
-    public static Sprite PLAYER_SN = new Sprite(32, 2, 7, SpriteSheet.SPRITESHEET);
-    public static Sprite PLAYER_SL = new Sprite(32, 2, 6, SpriteSheet.SPRITESHEET);
-    public static Sprite PLAYER_SR = new Sprite(32, 2, 5, SpriteSheet.SPRITESHEET);
 
     public int[] pixels;
     public final int SIZE;
@@ -64,9 +55,7 @@ public class Sprite {
         else this.SIZE = -1;
         this.width = width;
         this.height = height;
-        //this.pixels = new int[width * height];
         this.spriteSheet = spriteSheet;
-        //load();
     }
 
     public Sprite(int size, int x, int y, SpriteSheet spriteSheet) {
@@ -96,7 +85,7 @@ public class Sprite {
     private void load() {
         for(int y = 0; y < height; y++)
             for(int x = 0; x < width; x++)
-                pixels[x + y * width] = spriteSheet.pixels[(x + this.x) + (y + this.y) * spriteSheet.SIZE];
+                pixels[x + y * width] = spriteSheet.pixels[(x + this.x) + (y + this.y) * spriteSheet.WIDTH];
     }
 
     public int getWidth() {

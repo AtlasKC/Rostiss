@@ -20,11 +20,11 @@ import org.rostiss.game.graphics.Sprite;
  */
 public abstract class Projectile extends Entity {
 
-    protected final int xOrigin, yOrigin;
+    protected final double xOrigin, yOrigin;
     protected double angle, speed, range, damage, x, y, dx, dy;
     protected Sprite sprite;
 
-    public Projectile(int xOrigin, int yOrigin, double angle) {
+    public Projectile(double xOrigin, double yOrigin, double angle) {
         this.xOrigin = xOrigin;
         this.yOrigin = yOrigin;
         this.x = xOrigin;

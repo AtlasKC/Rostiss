@@ -29,15 +29,16 @@ import static java.lang.Math.atan2;
 
 public class Player extends Mob {
 
+    private static final double SPEED = 1;
+
     private Keyboard keyboard;
     private Sprite sprite;
-    private AnimatedSprite up = new AnimatedSprite(SpriteSheet.UP, 32, 32, 3);
-    private AnimatedSprite down = new AnimatedSprite(SpriteSheet.DOWN, 32, 32, 3);
-    private AnimatedSprite left = new AnimatedSprite(SpriteSheet.LEFT, 32, 32, 3);
-    private AnimatedSprite right = new AnimatedSprite(SpriteSheet.RIGHT, 32, 32, 3);
+    private AnimatedSprite up = new AnimatedSprite(SpriteSheet.PLAYER_UP, 32, 32, 3);
+    private AnimatedSprite down = new AnimatedSprite(SpriteSheet.PLAYER_DOWN, 32, 32, 3);
+    private AnimatedSprite left = new AnimatedSprite(SpriteSheet.PLAYER_LEFT, 32, 32, 3);
+    private AnimatedSprite right = new AnimatedSprite(SpriteSheet.PLAYER_RIGHT, 32, 32, 3);
     private AnimatedSprite animatedSprite = null;
     private int animation, rate = AtlasProjectile.FIRE_RATE;
-    private boolean walking;
 
     public Player(Keyboard keyboard) {
         this.keyboard = keyboard;
@@ -52,27 +53,27 @@ public class Player extends Mob {
     }
 
     public void update() {
-        if(walking) animatedSprite.update();
+        if (walking) animatedSprite.update();
         else animatedSprite.setFrame(0);
         if (rate > 0) rate--;
-        int dx = 0, dy = 0;
+        double dx = 0, dy = 0;
         animation++;
         if (animation >= 2147483646)
             animation = 0;
         if (keyboard.up) {
-            dy--;
+            dy -= SPEED;
             animatedSprite = up;
         }
         if (keyboard.down) {
-            dy++;
+            dy += SPEED;
             animatedSprite = down;
         }
         if (keyboard.left) {
-            dx--;
+            dx -= SPEED;
             animatedSprite = left;
         }
         if (keyboard.right) {
-            dx++;
+            dx += SPEED;
             animatedSprite = right;
         }
         if (dx != 0 || dy != 0) {
@@ -95,6 +96,6 @@ public class Player extends Mob {
 
     public void render(Renderer2D renderer) {
         sprite = animatedSprite.getSprite();
-        renderer.renderPlayer(x - 8, y - 8, sprite, false);
+        renderer.renderMob((int)(x - 16), (int)(y - 16), sprite, false);
     }
 }

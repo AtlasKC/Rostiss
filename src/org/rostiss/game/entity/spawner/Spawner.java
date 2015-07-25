@@ -3,7 +3,7 @@ package org.rostiss.game.entity.spawner;
 import org.rostiss.game.entity.Entity;
 import org.rostiss.game.level.Level;
 
-public class Spawner extends Entity {
+public abstract class Spawner extends Entity {
 
 	private Type type;
 

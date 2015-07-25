@@ -1,5 +1,8 @@
 package org.rostiss.game.level;
 
+import org.rostiss.game.entity.mob.Chaser;
+import org.rostiss.game.entity.mob.Dummy;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -37,5 +40,8 @@ public class SpawnLevel extends Level {
             e.printStackTrace();
             System.err.println("Error: SpawnLevel - loadLevel() | Could not load level file.");
         }
+        for(int i = 0; i < 5; i++)
+            add(new Dummy(19, 55));
+        add(new Chaser(15, 60));
     }
 }

@@ -39,7 +39,6 @@ public class Tile {
     public static Tile WATER = new WaterTile(Sprite.WATER);
     public static Tile VOID = new VoidTile(Sprite.VOID);
 
-    public int x, y;
     public Sprite sprite;
 
     public Tile(Sprite sprite) {

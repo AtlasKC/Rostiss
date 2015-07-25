@@ -3,7 +3,7 @@ package org.rostiss.game.entity.mob;
 import org.rostiss.game.entity.Entity;
 import org.rostiss.game.entity.projectile.AtlasProjectile;
 import org.rostiss.game.entity.projectile.Projectile;
-import org.rostiss.game.graphics.Sprite;
+import org.rostiss.game.graphics.Renderer2D;
 
 /**
  * File: Mob.java
@@ -23,42 +23,73 @@ import org.rostiss.game.graphics.Sprite;
 
 public abstract class Mob extends Entity {
 
-    protected Sprite sprite;
-    protected int direction = 0;
-    protected boolean moving = false;
+    protected enum Direction { UP, DOWN, LEFT, RIGHT;}
+    protected Direction direction;
+    protected boolean walking = false;
 
-    public void update() {}
+    public abstract void update();
 
-    public void move(int dx, int dy) {
+    public abstract void render(Renderer2D renderer);
+
+    public void move(double dx, double dy) {
         if (dx != 0 && dy != 0) {
             move(dx, 0);
             move(0, dy);
             return;
         }
-        if (dx > 0) direction = 1;
-        if (dx < 0) direction = 3;
-        if (dy > 0) direction = 2;
-        if (dy < 0) direction = 0;
-        if (!collision(dx, dy)) {
-            x += dx;
-            y += dy;
+        if (dx > 0) direction = Direction.RIGHT;
+        if (dx < 0) direction = Direction.LEFT;
+        if (dy > 0) direction = Direction.DOWN;
+        if (dy < 0) direction = Direction.UP;
+        while(dx != 0) {
+            if(Math.abs(dx) > 1) {
+                if (!collision(sign(dx), dy))
+                    this.x += sign(dx);
+                dx -= sign(dx);
+            } else {
+                if(!collision(sign(dx), dy))
+                    this.x += dx;
+                dx = 0;
+            }
+        }
+        while(dy != 0) {
+            if(Math.abs(dy) > 1) {
+                if (!collision(dx, sign(dy)))
+                    this.y += sign(dy);
+                dy -= sign(dy);
+            } else {
+                if(!collision(dx, sign(dy)))
+                    this.y += dy;
+                dy = 0;
+            }
         }
     }
 
-    public void render() {}
-
-    private boolean collision(int dx, int dy) {
+    private boolean collision(double dx, double dy) {
         boolean solid = false;
         for (int c = 0; c < 4; c++) {
-            int xt = ((x + dx) + c % 2 * 14) / 16;
-            int yt = ((y + dy) + c / 2 * 12 + 8) / 16;
-            if (level.getTile(xt, yt).solid())
+            double xt = ((x + dx) - c % 2 * 16) / 16;
+            double yt = ((y + dy) - c / 2 * 16) / 16;
+            if (c % 2 == 0)
+                xt = (int) Math.floor(xt);
+            else
+                xt = (int) Math.ceil(xt);
+            if (c / 2 == 0)
+                yt = (int) Math.floor(yt);
+            else
+                yt = (int) Math.ceil(yt);
+            if (level.getTile((int)xt, (int)yt).solid())
                 solid = true;
         }
         return solid;
     }
 
-    protected void shoot(int x, int y, double direction) {
+    private int sign(double value) {
+        if(value < 0) return -1;
+        else return 1;
+    }
+
+    protected void shoot(double x, double y, double direction) {
         Projectile projectile = new AtlasProjectile(x, y, direction);
         level.add(projectile);
     }

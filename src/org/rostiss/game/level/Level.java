@@ -1,6 +1,7 @@
 package org.rostiss.game.level;
 
 import org.rostiss.game.entity.Entity;
+import org.rostiss.game.entity.mob.Player;
 import org.rostiss.game.entity.particle.Particle;
 import org.rostiss.game.entity.projectile.Projectile;
 import org.rostiss.game.graphics.Renderer2D;
@@ -35,6 +36,7 @@ public class Level {
     private List<Projectile> projectiles = new ArrayList<>();
     private List<Particle> particles = new ArrayList<>();
     private List<Entity> entities = new ArrayList<>();
+    private List<Player> players = new ArrayList<>();
 
     public Level(String file) {
         loadLevel(file);
@@ -49,34 +51,41 @@ public class Level {
     }
 
     public void add(Entity entity) {
-    	entity.setLevel(this);
-    	if(entity instanceof Projectile)
-    		projectiles.add((Projectile)entity);
-    	else if(entity instanceof Particle)
-    		particles.add((Particle)entity);
-    	else
-    		entities.add(entity);
+        entity.setLevel(this);
+        if (entity instanceof Projectile)
+            projectiles.add((Projectile) entity);
+        else if (entity instanceof Particle)
+            particles.add((Particle) entity);
+        else if (entity instanceof Player)
+            players.add((Player) entity);
+        else
+            entities.add(entity);
     }
-    
+
     private void remove() {
-    	for(int i = 0; i < projectiles.size(); i++) {
-        	if(projectiles.get(i).isRemoved())
-        		projectiles.remove(projectiles.get(i));
+        for (int i = 0; i < projectiles.size(); i++) {
+            if (projectiles.get(i).isRemoved())
+                projectiles.remove(projectiles.get(i));
         }
-    	for(int i = 0; i < particles.size(); i++) {
-        	if(particles.get(i).isRemoved())
-        		particles.remove(particles.get(i));
+        for (int i = 0; i < particles.size(); i++) {
+            if (particles.get(i).isRemoved())
+                particles.remove(particles.get(i));
         }
-    	for(int i = 0; i < entities.size(); i++) {
-        	if(entities.get(i).isRemoved())
-        		entities.remove(entities.get(i));
+        for (int i = 0; i < entities.size(); i++) {
+            if (entities.get(i).isRemoved())
+                entities.remove(entities.get(i));
+        }
+        for (int i = 0; i < players.size(); i++) {
+            if (players.get(i).isRemoved())
+                players.remove(players.get(i));
         }
     }
 
     public void update() {
-    	projectiles.forEach(Projectile::update);
-    	particles.forEach(Particle::update);
+        projectiles.forEach(Projectile::update);
+        particles.forEach(Particle::update);
         entities.forEach(Entity::update);
+        players.forEach(Player::update);
         remove();
     }
 
@@ -99,6 +108,7 @@ public class Level {
         for (int y = y0; y < y1; y++)
             for (int x = x0; x < x1; x++)
                 getTile(x, y).render(x, y, renderer);
+        players.forEach(player -> player.render(renderer));
         entities.forEach(entity -> entity.render(renderer));
         projectiles.forEach(projectile -> projectile.render(renderer));
         particles.forEach(particle -> particle.render(renderer));
@@ -114,9 +124,52 @@ public class Level {
         return Tile.VOID;
     }
 
-    private void time() {}
+    public List<Entity> getEntitiesInRange(Entity entity, int range) {
+        List<Entity> result = new ArrayList<>();
+        for (Entity e : entities) {
+            double x = e.getX();
+            double y = e.getY();
+            double dx = Math.abs(x - entity.getX());
+            double dy = Math.abs(y - entity.getY());
+            double distance = Math.sqrt(dx * dx + dy * dy);
+            if(distance <= range)
+                result.add(e);
+        }
+        return result;
+    }
 
-    protected void generateLevel() {}
+    public List<Player> getPlayersInRange(Entity entity, int range) {
+        List<Player> result = new ArrayList<>();
+        for (Player player : players) {
+            double x = player.getX();
+            double y = player.getY();
+            double dx = Math.abs(x - entity.getX());
+            double dy = Math.abs(y - entity.getY());
+            double distance = Math.sqrt(dx * dx + dy * dy);
+            if(distance <= range)
+                result.add(player);
+        }
+        return result;
+    }
 
-    protected void loadLevel(String file) {}
+    public List<Player> getPlayers() {
+        return players;
+    }
+
+    public Player getPlayerAt(int index) {
+        return players.get(index);
+    }
+
+    public Player getClientPlayer() {
+        return players.get(0);
+    }
+
+    private void time() {
+    }
+
+    protected void generateLevel() {
+    }
+
+    protected void loadLevel(String file) {
+    }
 }
