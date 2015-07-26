@@ -6,8 +6,11 @@ import org.rostiss.game.entity.particle.Particle;
 import org.rostiss.game.entity.projectile.Projectile;
 import org.rostiss.game.graphics.Renderer2D;
 import org.rostiss.game.level.tile.Tile;
+import org.rostiss.game.util.Vector2i;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -37,6 +40,13 @@ public class Level {
     private List<Particle> particles = new ArrayList<>();
     private List<Entity> entities = new ArrayList<>();
     private List<Player> players = new ArrayList<>();
+    private Comparator<Node> nodeComparator = (node1, node2) -> {
+        if (node1.fCost > node2.fCost)
+            return 1;
+        if (node1.fCost < node2.fCost)
+            return -1;
+        return 0;
+    };
 
     public Level(String file) {
         loadLevel(file);
@@ -89,6 +99,62 @@ public class Level {
         remove();
     }
 
+    public List<Node> findPath(Vector2i start, Vector2i end) {
+        List<Node> openedList = new ArrayList<>();
+        List<Node> closedList = new ArrayList<>();
+        Node current = new Node(start, null, 0, getDistance(start, end));
+        openedList.add(current);
+        while (openedList.size() > 0) {
+            Collections.sort(openedList, nodeComparator);
+            current = openedList.get(0);
+            if (current.tile.equals(end)) {
+                List<Node> path = new ArrayList<>();
+                while (current.parent != null) {
+                    path.add(current);
+                    current = current.parent;
+                }
+                openedList.clear();
+                closedList.clear();
+                return path;
+            }
+            openedList.remove(current);
+            closedList.add(current);
+            for (int i = 0; i < 9; i++) {
+                if (i == 4)
+                    continue;
+                int x = current.tile.getX();
+                int y = current.tile.getY();
+                int dx = (i % 3) - 1;
+                int dy = (i / 3) - 1;
+                Tile tile = getTile(x + dx, y + dy);
+                if (tile == null)
+                    continue;
+                if (tile.solid())
+                    continue;
+                Vector2i tilePosition = new Vector2i(x + dx, y + dy);
+                double gCost = current.gCost + getDistance(current.tile, tilePosition) > 1 ? 0.95 : 1;
+                double hCost = getDistance(tilePosition, end);
+                Node node = new Node(tilePosition, current, gCost, hCost);
+                if (containsVector(closedList, tilePosition) && gCost >= current.gCost)
+                    continue;
+                if (!containsVector(openedList, tilePosition) || gCost < current.gCost)
+                    openedList.add(node);
+            }
+        }
+        closedList.clear();
+        return null;
+    }
+
+    private boolean containsVector(List<Node> list, Vector2i vector) {
+        for (Node node : list)
+            if (node.tile.equals(vector)) return true;
+        return false;
+    }
+
+    private double getDistance(Vector2i start, Vector2i end) {
+        return Math.sqrt((start.getX() - end.getX()) * (start.getX() - end.getX()) + (start.getY() - end.getY()) * (start.getY() - end.getY()));
+    }
+
     public boolean tileCollision(int x, int y, int size, int xOffset, int yOffset) {
         boolean solid = false;
         for (int c = 0; c < 4; c++) {
@@ -127,12 +193,12 @@ public class Level {
     public List<Entity> getEntitiesInRange(Entity entity, int range) {
         List<Entity> result = new ArrayList<>();
         for (Entity e : entities) {
-            double x = e.getX();
-            double y = e.getY();
-            double dx = Math.abs(x - entity.getX());
-            double dy = Math.abs(y - entity.getY());
-            double distance = Math.sqrt(dx * dx + dy * dy);
-            if(distance <= range)
+            int x = (int) e.getX();
+            int y = (int) e.getY();
+            int dx = (int) Math.abs(x - entity.getX());
+            int dy = (int) Math.abs(y - entity.getY());
+            int distance = (int) Math.sqrt(dx * dx + dy * dy);
+            if (distance <= range)
                 result.add(e);
         }
         return result;
@@ -141,12 +207,12 @@ public class Level {
     public List<Player> getPlayersInRange(Entity entity, int range) {
         List<Player> result = new ArrayList<>();
         for (Player player : players) {
-            double x = player.getX();
-            double y = player.getY();
-            double dx = Math.abs(x - entity.getX());
-            double dy = Math.abs(y - entity.getY());
-            double distance = Math.sqrt(dx * dx + dy * dy);
-            if(distance <= range)
+            int x = (int) player.getX();
+            int y = (int) player.getY();
+            int dx = (int) Math.abs(x - entity.getX());
+            int dy = (int) Math.abs(y - entity.getY());
+            int distance = (int) Math.sqrt(dx * dx + dy * dy);
+            if (distance <= range)
                 result.add(player);
         }
         return result;

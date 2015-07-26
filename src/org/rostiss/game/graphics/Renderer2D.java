@@ -1,5 +1,6 @@
 package org.rostiss.game.graphics;
 
+import org.rostiss.game.entity.mob.AStar;
 import org.rostiss.game.entity.mob.Chaser;
 import org.rostiss.game.entity.mob.Mob;
 import org.rostiss.game.entity.projectile.Projectile;
@@ -82,8 +83,8 @@ public class Renderer2D {
                 if (worldX < -mob.getSprite().SIZE || worldX >= width || worldY < 0 || worldY >= height) break;
                 if (worldX < 0) worldX = 0;
                 int color = mob.getSprite().pixels[x + y * mob.getSprite().SIZE];
-                if(mob instanceof Chaser && color == 0xFFFFB08E)
-                    color = 0xFF775243;
+                if(mob instanceof Chaser && color == 0xFFFFB08E) color = 0xFF775243;
+                if(mob instanceof AStar && color == 0xFFFFB08E) color = 0xFF000000;
                 if (color != 0xFFFF00FF)
                     pixels[worldX + worldY * width] = color;
             }

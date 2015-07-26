@@ -47,16 +47,10 @@ public class Rostiss extends Canvas implements Runnable {
     private int[] pixels;
     private int scale, width, height;
     private boolean running = false;
-    
-<<<<<<< HEAD
+
     //Multiplayer stuff
-//    public Client client;
-//    public Server server;
-=======
-    //Multiplayer
-    public Client client;
-    public Server server;
->>>>>>> 213617a39b024c63ed67cb16e97be6f1912273b4
+    //public Client client;
+    //public Server server;
 
     private Rostiss() {
         this("Rostiss 0.1.3-7 Beta");

@@ -23,7 +23,8 @@ import org.rostiss.game.graphics.Renderer2D;
 
 public abstract class Mob extends Entity {
 
-    protected enum Direction { UP, DOWN, LEFT, RIGHT;}
+    protected enum Direction {UP, DOWN, LEFT, RIGHT;}
+
     protected Direction direction;
     protected boolean walking = false;
 
@@ -41,24 +42,24 @@ public abstract class Mob extends Entity {
         if (dx < 0) direction = Direction.LEFT;
         if (dy > 0) direction = Direction.DOWN;
         if (dy < 0) direction = Direction.UP;
-        while(dx != 0) {
-            if(Math.abs(dx) > 1) {
+        while (dx != 0) {
+            if (Math.abs(dx) > 1) {
                 if (!collision(sign(dx), dy))
                     this.x += sign(dx);
                 dx -= sign(dx);
             } else {
-                if(!collision(sign(dx), dy))
+                if (!collision(sign(dx), dy))
                     this.x += dx;
                 dx = 0;
             }
         }
-        while(dy != 0) {
-            if(Math.abs(dy) > 1) {
+        while (dy != 0) {
+            if (Math.abs(dy) > 1) {
                 if (!collision(dx, sign(dy)))
                     this.y += sign(dy);
                 dy -= sign(dy);
             } else {
-                if(!collision(dx, sign(dy)))
+                if (!collision(dx, sign(dy)))
                     this.y += dy;
                 dy = 0;
             }
@@ -68,25 +69,20 @@ public abstract class Mob extends Entity {
     private boolean collision(double dx, double dy) {
         boolean solid = false;
         for (int c = 0; c < 4; c++) {
-            double xt = ((x + dx) - c % 2 * 16) / 16;
-            double yt = ((y + dy) - c / 2 * 16) / 16;
-            if (c % 2 == 0)
-                xt = (int) Math.floor(xt);
-            else
-                xt = (int) Math.ceil(xt);
-            if (c / 2 == 0)
-                yt = (int) Math.floor(yt);
-            else
-                yt = (int) Math.ceil(yt);
-            if (level.getTile((int)xt, (int)yt).solid())
-                solid = true;
+            double xt = ((x + dx) - c % 2 * 15) / 16;
+            double yt = ((y + dy) - c / 2 * 15) / 16;
+            int ix = (int) Math.ceil(xt);
+            int iy = (int) Math.ceil(yt);
+            if (c % 2 == 0) ix = (int) Math.floor(xt);
+            if (c / 2 == 0) iy = (int) Math.floor(yt);
+            if (level.getTile(ix, iy).solid()) solid = true;
         }
         return solid;
     }
 
     private int sign(double value) {
-        if(value < 0) return -1;
-        else return 1;
+        if (value < 0) return -1;
+        return 1;
     }
 
     protected void shoot(double x, double y, double direction) {

@@ -1,5 +1,7 @@
 package org.rostiss.game.level;
 
+import org.rostiss.game.util.Vector2i;
+
 /**
  * File: Node.java
  * Created by Atlas IND on 7/24/2015 at 10:06 PM.
@@ -18,5 +20,15 @@ package org.rostiss.game.level;
 
 public class Node {
 
+    public Vector2i tile;
+    public Node parent;
+    public double fCost, gCost, hCost;
 
+    public Node(Vector2i tile, Node parent, double gCost, double hCost) {
+        this.tile = tile;
+        this.parent = parent;
+        this.gCost = gCost;
+        this.hCost = hCost;
+        this.fCost = gCost + hCost;
+    }
 }

@@ -61,6 +61,13 @@ public class Vector2i {
         return this;
     }
 
+    public boolean equals(Object object) {
+        if(!(object instanceof Vector2i)) return false;
+        Vector2i vector = (Vector2i)object;
+        if(this.x == vector.getX() && this.y == vector.getY()) return true;
+        return false;
+    }
+
     public int getX() {
         return x;
     }

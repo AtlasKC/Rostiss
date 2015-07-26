@@ -23,14 +23,14 @@ import java.util.List;
  */
 public class Chaser extends Mob {
 
-    private static final double SPEED = 0.8;
+    private static final double SPEED = 0.75;
 
     private AnimatedSprite up = new AnimatedSprite(SpriteSheet.TEST_UP, 32, 32, 3);
     private AnimatedSprite down = new AnimatedSprite(SpriteSheet.TEST_DOWN, 32, 32, 3);
     private AnimatedSprite left = new AnimatedSprite(SpriteSheet.TEST_LEFT, 32, 32, 3);
     private AnimatedSprite right = new AnimatedSprite(SpriteSheet.TEST_RIGHT, 32, 32, 3);
     private AnimatedSprite animatedSprite = down;
-    private double dx = 0, dy = 0;
+    private double dx, dy;
 
     public Chaser(int x, int y) {
         this.x = x << 4;
@@ -40,22 +40,22 @@ public class Chaser extends Mob {
 
     public void update() {
         move();
-        if (walking) animatedSprite.update();
-        else animatedSprite.setFrame(0);
         if (dy < 0) {
-            direction = Direction.UP;
             animatedSprite = up;
+            direction = Direction.UP;
         } else if (dy > 0) {
-            direction = Direction.DOWN;
             animatedSprite = down;
+            direction = Direction.DOWN;
         }
         if (dx < 0) {
-            direction = Direction.LEFT;
             animatedSprite = left;
+            direction = Direction.LEFT;
         } else if (dx > 0) {
-            direction = Direction.RIGHT;
             animatedSprite = right;
+            direction = Direction.RIGHT;
         }
+        if (walking) animatedSprite.update();
+        else animatedSprite.setFrame(0);
     }
 
     public void render(Renderer2D renderer) {
@@ -64,17 +64,18 @@ public class Chaser extends Mob {
     }
 
     private void move() {
-        dx = dy = 0;
+        dx = 0;
+        dy = 0;
         List<Player> players = level.getPlayersInRange(this, 100);
         Player player = level.getClientPlayer();
         if (players.contains(player)) {
-            if (x < player.getX())
+            if ((int) x < (int) player.getX())
                 dx += SPEED;
-            if (x > player.getX())
+            if ((int) x > (int) player.getX())
                 dx -= SPEED;
-            if (y < player.getY())
+            if ((int) y < (int) player.getY())
                 dy += SPEED;
-            if (y > player.getY())
+            if ((int) y > (int) player.getY())
                 dy -= SPEED;
         }
         if (dx != 0 || dy != 0) {
