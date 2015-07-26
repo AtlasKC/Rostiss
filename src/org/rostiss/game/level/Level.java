@@ -193,6 +193,7 @@ public class Level {
     public List<Entity> getEntitiesInRange(Entity entity, int range) {
         List<Entity> result = new ArrayList<>();
         for (Entity e : entities) {
+            if(e.equals(entity)) continue;
             int x = (int) e.getX();
             int y = (int) e.getY();
             int dx = (int) Math.abs(x - entity.getX());
