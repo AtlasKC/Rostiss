@@ -6,6 +6,8 @@ import org.rostiss.game.input.Keyboard;
 import org.rostiss.game.input.Mouse;
 import org.rostiss.game.level.Level;
 import org.rostiss.game.level.TileCoords;
+import org.rostiss.game.net.Client;
+import org.rostiss.game.net.Server;
 
 import javax.swing.*;
 import java.awt.*;
@@ -49,8 +51,8 @@ public class Rostiss extends Canvas implements Runnable {
     private boolean running = false;
 
     //Multiplayer stuff
-    //public Client client;
-    //public Server server;
+    public Client client;
+    public Server server;
 
     private Rostiss() {
         this("Rostiss 0.1.3-7 Beta");
@@ -96,13 +98,13 @@ public class Rostiss extends Canvas implements Runnable {
         running = true;
         thread = new Thread(this);
         thread.start();
-//        if(JOptionPane.showConfirmDialog(this, "Start a server?") == 0) {
-//        	server = new Server(this);
-//        	server.start();
-//        }
-//        client = new Client(this, "localhost");
-//        client.start();
-//        client.sendData("ping".getBytes());
+        if(JOptionPane.showConfirmDialog(this, "Start a server?") == 0) {
+        	server = new Server(this);
+        	server.start();
+        }
+        client = new Client(this, "localhost");
+        client.start();
+        client.sendData("ping".getBytes());
     }
 
     private synchronized void stop() {

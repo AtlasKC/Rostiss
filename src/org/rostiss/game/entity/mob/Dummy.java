@@ -26,7 +26,7 @@ public class Dummy extends Mob {
     private AnimatedSprite left = new AnimatedSprite(SpriteSheet.TEST_LEFT, 32, 32, 3);
     private AnimatedSprite right = new AnimatedSprite(SpriteSheet.TEST_RIGHT, 32, 32, 3);
     private AnimatedSprite animatedSprite = down;
-    private int time = 0, dx = 1, dy = 0;
+    private int time, dx, dy;
 
     public Dummy(int x, int y) {
         this.x = x << 4;

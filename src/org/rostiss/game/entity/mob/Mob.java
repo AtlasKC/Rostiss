@@ -23,7 +23,7 @@ import org.rostiss.game.graphics.Renderer2D;
 
 public abstract class Mob extends Entity {
 
-    protected enum Direction {UP, DOWN, LEFT, RIGHT;}
+    protected enum Direction { UP, DOWN, LEFT, RIGHT }
 
     protected Direction direction;
     protected boolean walking = false;

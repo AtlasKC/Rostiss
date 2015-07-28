@@ -5,6 +5,7 @@ import org.rostiss.game.entity.spawner.ParticleSpawner;
 import org.rostiss.game.graphics.AnimatedSprite;
 import org.rostiss.game.graphics.Renderer2D;
 import org.rostiss.game.graphics.SpriteSheet;
+import org.rostiss.game.util.Debug;
 import org.rostiss.game.util.Vector2i;
 
 import java.util.List;
@@ -32,7 +33,8 @@ public class Shooter extends Mob {
     private AnimatedSprite left = new AnimatedSprite(SpriteSheet.TEST_LEFT, 32, 32, 3);
     private AnimatedSprite right = new AnimatedSprite(SpriteSheet.TEST_RIGHT, 32, 32, 3);
     private AnimatedSprite animatedSprite = down;
-    private int time = 0, dx = 1, dy = 0;
+    private Entity playerToShoot = null;
+    private int time, dx, dy;
 
     public Shooter(int x, int y) {
         this.x = x << 4;
@@ -70,25 +72,41 @@ public class Shooter extends Mob {
             walking = true;
         } else
             walking = false;
-        List<Entity> entities = level.getEntitiesInRange(this, 150000);
-        entities.add(level.getClientPlayer());
-        double closestDistance = 0;
-        Entity closest = null;
-        for(int i = 0; i < entities.size(); i++) {
-            Entity entity = entities.get(i);
-            if(entity instanceof ParticleSpawner)
-                continue;
-            double distance = Vector2i.getDistance(new Vector2i((int)entity.getX(), (int)entity.getY()), new Vector2i((int)x, (int)y));
-            if(entity.equals(entities.get(0)) || distance < closestDistance) {
-                closestDistance = distance;
-                closest = entity;
-            }
-        }
-        if(closest != null && time % 15 == 0)
-            shoot(x, y, Math.atan2(closest.getY() - y, closest.getX() - x));
+        if (time % 15 == 0)
+            shootRandom();
     }
 
     public void render(Renderer2D renderer) {
+        Debug.drawRect(renderer, new Vector2i(16 * 19, 16 * 55), new Vector2i(60, 40), 0xFF0000, true);
         renderer.renderMob((int) (x - 16), (int) (y - 16), this);
+    }
+
+    private void shootRandom() {
+        if(time % (30 + random.nextInt(91)) == 0) {
+            List<Entity> entities = level.getEntitiesInRange(this, 500);
+            entities.add(level.getClientPlayer());
+            playerToShoot = entities.get(random.nextInt(entities.size()));
+        }
+        if (playerToShoot != null)
+            shoot(x, y, Math.atan2(playerToShoot.getY() - y, playerToShoot.getX() - x));
+    }
+
+    private void shootClosest() {
+        List<Entity> entities = level.getEntitiesInRange(this, 500);
+        entities.add(level.getClientPlayer());
+        double closestDistance = 0;
+        playerToShoot = null;
+        for (int i = 0; i < entities.size(); i++) {
+            Entity entity = entities.get(i);
+            if (entity instanceof ParticleSpawner)
+                continue;
+            double distance = Vector2i.getDistance(new Vector2i((int) entity.getX(), (int) entity.getY()), new Vector2i((int) x, (int) y));
+            if (entity.equals(entities.get(0)) || distance < closestDistance) {
+                closestDistance = distance;
+                playerToShoot = entity;
+            }
+        }
+        if (playerToShoot != null)
+            shoot(x, y, Math.atan2(playerToShoot.getY() - y, playerToShoot.getX() - x));
     }
 }

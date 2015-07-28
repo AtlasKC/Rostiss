@@ -5,6 +5,7 @@ import org.rostiss.game.entity.mob.Chaser;
 import org.rostiss.game.entity.mob.Mob;
 import org.rostiss.game.entity.projectile.Projectile;
 import org.rostiss.game.level.tile.Tile;
+import org.rostiss.game.util.Vector2i;
 
 import java.util.Random;
 
@@ -139,6 +140,29 @@ public class Renderer2D {
                 if (color != 0xFFFF00FF)
                     pixels[worldX + worldY * width] = color;
             }
+        }
+    }
+
+    public void drawRect(Vector2i position, Vector2i size, int color, boolean fixed) {
+        int xPos = position.getX();
+        int yPos = position.getY();
+        int width = size.getX();
+        int height = size.getY();
+        if(fixed) {
+            xPos -= xOffset;
+            yPos -= yOffset;
+        }
+        for(int x = xPos; x < xPos + width; x++) {
+            if(yPos >= this.height || x < 0 || x >= this.width) continue;
+            if(yPos > 0) pixels[x + yPos * this.width] = color;
+            if(yPos + height >= this.height) continue;
+            if(yPos + height > 0) pixels[x + (yPos + height) * this.width] = color;
+        }
+        for(int y = yPos; y <= yPos + height; y++) {
+            if(xPos >= this.width || y < 0 || y >= this.height) continue;
+            if(xPos > 0) pixels[xPos + y * this.width] = color;
+            if(xPos + width >= this.width) continue;
+            if(xPos + width > 0) pixels[xPos + width + y * this.width] = color;
         }
     }
 
