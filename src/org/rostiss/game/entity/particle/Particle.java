@@ -29,7 +29,7 @@ public class Particle extends Entity {
 		this.yy = y;
 		this.zz = random.nextFloat() + 2.0;
 		this.life = life + (random.nextInt(20) - 10);
-		this.sprite = Sprite.PARTICLE;
+		this.sprite = Sprite.PARTICLE_FIRE;
 		this.dx = random.nextGaussian();
 		this.dy = random.nextGaussian();
 	}

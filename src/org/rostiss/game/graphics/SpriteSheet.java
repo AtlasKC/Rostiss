@@ -37,17 +37,17 @@ public class SpriteSheet {
     public static SpriteSheet TEST_RIGHT = new SpriteSheet(TEST, 2, 0, 1, 3, 32);
 
     public final int SIZE, WIDTH, HEIGHT;
-    public int[] pixels;
 
     private Sprite[] sprites;
     private String file;
+    private int width, height;
+    private int[] pixels;
 
     public SpriteSheet(String file, int size) {
         this.file = file;
         this.SIZE = size;
         this.WIDTH = size;
         this.HEIGHT = size;
-        pixels = new int[SIZE * SIZE];
         load();
     }
 
@@ -56,7 +56,6 @@ public class SpriteSheet {
         this.SIZE = -1;
         this.WIDTH = width;
         this.HEIGHT = height;
-        pixels = new int[WIDTH * HEIGHT];
         load();
     }
 
@@ -98,14 +97,31 @@ public class SpriteSheet {
         return sprites;
     }
 
+    public int[] getPixels() {
+        return pixels;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
     private void load() {
         try {
+            System.out.print("Loading - " + file + ": ");
             BufferedImage image = ImageIO.read(SpriteSheet.class.getResource(file));
-            int width = image.getWidth();
-            int height = image.getHeight();
+            System.out.println("Succeeded!");
+            width = image.getWidth();
+            height = image.getHeight();
+            pixels = new int[width * height];
             image.getRGB(0, 0, width, height, pixels, 0, width);
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("Failed!");
         }
     }
 }

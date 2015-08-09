@@ -24,10 +24,10 @@ public class AtlasProjectile extends Projectile {
 
 	public AtlasProjectile(double xOrigin, double yOrigin, double angle) {
 		super(xOrigin, yOrigin, angle);
-		sprite = Sprite.ATLAS;
+		sprite = Sprite.rotate(Sprite.ROCKET, angle);
 		damage = 20;
 		range = 200;
-		speed = 2;
+		speed = 4;
 		dx = speed * cos(this.angle);
 		dy = speed * sin(this.angle);
 	}

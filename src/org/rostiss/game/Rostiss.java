@@ -1,13 +1,12 @@
 package org.rostiss.game;
 
 import org.rostiss.game.entity.mob.Player;
+import org.rostiss.game.graphics.Font;
 import org.rostiss.game.graphics.Renderer2D;
 import org.rostiss.game.input.Keyboard;
 import org.rostiss.game.input.Mouse;
 import org.rostiss.game.level.Level;
 import org.rostiss.game.level.TileCoords;
-import org.rostiss.game.net.Client;
-import org.rostiss.game.net.Server;
 
 import javax.swing.*;
 import java.awt.*;
@@ -45,14 +44,15 @@ public class Rostiss extends Canvas implements Runnable {
     private Thread thread;
     private JFrame frame;
     private BufferedImage image;
+    private Font font;
     private String title;
     private int[] pixels;
     private int scale, width, height;
     private boolean running = false;
 
     //Multiplayer stuff
-    public Client client;
-    public Server server;
+//    public Client client;
+//    public Server server;
 
     private Rostiss() {
         this("Rostiss 0.1.3-7 Beta");
@@ -79,6 +79,7 @@ public class Rostiss extends Canvas implements Runnable {
         player = new Player(keyboard, spawn.getX(), spawn.getY());
         player.setLevel(Level.spawn);
         level.add(player);
+        font = new Font();
         frame = new JFrame();
         frame.setResizable(false);
         frame.add(this);
@@ -98,13 +99,13 @@ public class Rostiss extends Canvas implements Runnable {
         running = true;
         thread = new Thread(this);
         thread.start();
-        if(JOptionPane.showConfirmDialog(this, "Start a server?") == 0) {
-        	server = new Server(this);
-        	server.start();
-        }
-        client = new Client(this, "localhost");
-        client.start();
-        client.sendData("ping".getBytes());
+//        if(JOptionPane.showConfirmDialog(this, "Start a server?") == 0) {
+//        	server = new Server(this);
+//        	server.start();
+//        }
+//        client = new Client(this, "localhost");
+//        client.start();
+//        client.sendData("ping".getBytes());
     }
 
     private synchronized void stop() {
@@ -155,7 +156,8 @@ public class Rostiss extends Canvas implements Runnable {
             return;
         }
         renderer.clear();
-        level.render((int)(player.getX() - renderer.width / 2), (int)(player.getY() - renderer.height / 2), renderer);
+        level.render((int) (player.getX() - renderer.width / 2), (int) (player.getY() - renderer.height / 2), renderer);
+        font.render("Heyyyy!", 0, 0, 16, renderer);
         arraycopy(renderer.pixels, 0, pixels, 0, pixels.length);
         Graphics g = bufferStrategy.getDrawGraphics();
         g.drawImage(image, 0, 0, getWidth(), getHeight(), null);

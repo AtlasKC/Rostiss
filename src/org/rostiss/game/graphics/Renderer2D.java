@@ -27,7 +27,7 @@ import java.util.Random;
 
 public class Renderer2D {
 
-    private final int MAP_SIZE = 4, MAP_SIZE_MASK = MAP_SIZE - 1;
+    private final int MAP_SIZE = 4, MAP_SIZE_MASK = MAP_SIZE - 1, ALPHA_COLOR = 0xFFFF00FF;
     public int[] pixels;
     private int[] tiles = new int[MAP_SIZE * MAP_SIZE];
     public int width;
@@ -53,8 +53,8 @@ public class Renderer2D {
             int worldY = y + dy;
             for (int x = 0; x < spriteSheet.WIDTH; x++) {
                 int worldX = x + dx;
-                if(worldX < 0 || worldX >= width || worldY < 0 || worldY >= height) continue;
-                pixels[worldX + worldY * width] = spriteSheet.pixels[x + y * spriteSheet.WIDTH];
+                if (worldX < 0 || worldX >= width || worldY < 0 || worldY >= height) continue;
+                pixels[worldX + worldY * width] = spriteSheet.getPixels()[x + y * spriteSheet.WIDTH];
             }
         }
     }
@@ -68,8 +68,27 @@ public class Renderer2D {
             int worldY = y + dy;
             for (int x = 0; x < sprite.getWidth(); x++) {
                 int worldX = x + dx;
-                if(worldX < 0 || worldX >= width || worldY < 0 || worldY >= height) continue;
-                pixels[worldX + worldY * width] = sprite.pixels[x + y * sprite.getWidth()];
+                if (worldX < 0 || worldX >= width || worldY < 0 || worldY >= height) continue;
+                int color = sprite.pixels[x + y * sprite.getWidth()];
+                if (color != ALPHA_COLOR)
+                    pixels[worldX + worldY * width] = color;
+            }
+        }
+    }
+
+    public void renderText(int dx, int dy, int color, Sprite sprite, boolean fixed) {
+        if (fixed) {
+            dx -= xOffset;
+            dy -= yOffset;
+        }
+        for (int y = 0; y < sprite.getHeight(); y++) {
+            int worldY = y + dy;
+            for (int x = 0; x < sprite.getWidth(); x++) {
+                int worldX = x + dx;
+                if (worldX < 0 || worldX >= width || worldY < 0 || worldY >= height) continue;
+                int pixelColor = sprite.pixels[x + y * sprite.getWidth()];
+                if (pixelColor != ALPHA_COLOR)
+                    pixels[worldX + worldY * width] = color;
             }
         }
     }
@@ -84,9 +103,9 @@ public class Renderer2D {
                 if (worldX < -mob.getSprite().SIZE || worldX >= width || worldY < 0 || worldY >= height) break;
                 if (worldX < 0) worldX = 0;
                 int color = mob.getSprite().pixels[x + y * mob.getSprite().SIZE];
-                if(mob instanceof Chaser && color == 0xFFFFB08E) color = 0xFF775243;
-                if(mob instanceof AStar && color == 0xFFFFB08E) color = 0xFF000000;
-                if (color != 0xFFFF00FF)
+                if (mob instanceof Chaser && color == 0xFFFFB08E) color = 0xFF775243;
+                if (mob instanceof AStar && color == 0xFFFFB08E) color = 0xFF000000;
+                if (color != ALPHA_COLOR)
                     pixels[worldX + worldY * width] = color;
             }
         }
@@ -107,7 +126,7 @@ public class Renderer2D {
                     color = sprite.pixels[dx + y * sprite.SIZE];
                 else
                     color = sprite.pixels[x + y * sprite.SIZE];
-                if (color != 0xFFFF00FF)
+                if (color != ALPHA_COLOR)
                     pixels[worldX + worldY * width] = color;
             }
         }
@@ -137,8 +156,7 @@ public class Renderer2D {
                 if (worldX < -projectile.getSize() || worldX >= width || worldY < 0 || worldY >= height) break;
                 if (worldX < 0) worldX = 0;
                 int color = projectile.getSprite().pixels[x + y * projectile.getSize()];
-                if (color != 0xFFFF00FF)
-                    pixels[worldX + worldY * width] = color;
+                if (color != ALPHA_COLOR) pixels[worldX + worldY * width] = color;
             }
         }
     }
@@ -148,21 +166,21 @@ public class Renderer2D {
         int yPos = position.getY();
         int width = size.getX();
         int height = size.getY();
-        if(fixed) {
+        if (fixed) {
             xPos -= xOffset;
             yPos -= yOffset;
         }
-        for(int x = xPos; x < xPos + width; x++) {
-            if(yPos >= this.height || x < 0 || x >= this.width) continue;
-            if(yPos > 0) pixels[x + yPos * this.width] = color;
-            if(yPos + height >= this.height) continue;
-            if(yPos + height > 0) pixels[x + (yPos + height) * this.width] = color;
+        for (int x = xPos; x < xPos + width; x++) {
+            if (yPos >= this.height || x < 0 || x >= this.width) continue;
+            if (yPos > 0) pixels[x + yPos * this.width] = color;
+            if (yPos + height >= this.height) continue;
+            if (yPos + height > 0) pixels[x + (yPos + height) * this.width] = color;
         }
-        for(int y = yPos; y <= yPos + height; y++) {
-            if(xPos >= this.width || y < 0 || y >= this.height) continue;
-            if(xPos > 0) pixels[xPos + y * this.width] = color;
-            if(xPos + width >= this.width) continue;
-            if(xPos + width > 0) pixels[xPos + width + y * this.width] = color;
+        for (int y = yPos; y <= yPos + height; y++) {
+            if (xPos >= this.width || y < 0 || y >= this.height) continue;
+            if (xPos > 0) pixels[xPos + y * this.width] = color;
+            if (xPos + width >= this.width) continue;
+            if (xPos + width > 0) pixels[xPos + width + y * this.width] = color;
         }
     }
 
