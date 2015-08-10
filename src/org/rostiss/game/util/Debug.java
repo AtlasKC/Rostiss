@@ -20,13 +20,22 @@ import org.rostiss.game.graphics.Renderer2D;
 
 public class Debug {
 
-    private Debug() {}
+    private Debug() {
+    }
 
     public static void drawRect(Renderer2D renderer, Vector2i position, Vector2i size, int color, boolean fixed) {
-        renderer.drawRect(position, size, color, fixed);
+        drawRect(renderer, position.getX(), position.getY(), size.getX(), size.getY(), color, fixed);
     }
 
     public static void drawRect(Renderer2D renderer, Vector2i position, Vector2i size, boolean fixed) {
         drawRect(renderer, position, size, 0, fixed);
+    }
+
+    public static void drawRect(Renderer2D renderer, int x, int y, int width, int height, int color, boolean fixed) {
+        renderer.drawRect(x, y, width, height, color, fixed);
+    }
+
+    public static void drawRect(Renderer2D renderer, int x, int y, int width, int height, boolean fixed) {
+        drawRect(renderer, x, y, width, height, 0, fixed);
     }
 }

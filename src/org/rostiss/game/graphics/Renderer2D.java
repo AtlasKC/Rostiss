@@ -5,7 +5,6 @@ import org.rostiss.game.entity.mob.Chaser;
 import org.rostiss.game.entity.mob.Mob;
 import org.rostiss.game.entity.projectile.Projectile;
 import org.rostiss.game.level.tile.Tile;
-import org.rostiss.game.util.Vector2i;
 
 import java.util.Random;
 
@@ -161,11 +160,7 @@ public class Renderer2D {
         }
     }
 
-    public void drawRect(Vector2i position, Vector2i size, int color, boolean fixed) {
-        int xPos = position.getX();
-        int yPos = position.getY();
-        int width = size.getX();
-        int height = size.getY();
+    public void drawRect(int xPos, int yPos, int width, int height, int color, boolean fixed) {
         if (fixed) {
             xPos -= xOffset;
             yPos -= yOffset;

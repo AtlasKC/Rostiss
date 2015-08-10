@@ -5,7 +5,6 @@ import org.rostiss.game.entity.spawner.ParticleSpawner;
 import org.rostiss.game.graphics.AnimatedSprite;
 import org.rostiss.game.graphics.Renderer2D;
 import org.rostiss.game.graphics.SpriteSheet;
-import org.rostiss.game.util.Debug;
 import org.rostiss.game.util.Vector2i;
 
 import java.util.List;
@@ -77,12 +76,11 @@ public class Shooter extends Mob {
     }
 
     public void render(Renderer2D renderer) {
-        Debug.drawRect(renderer, new Vector2i(16 * 19, 16 * 55), new Vector2i(60, 40), 0xFF0000, true);
         renderer.renderMob((int) (x - 16), (int) (y - 16), this);
     }
 
     private void shootRandom() {
-        if(time % (30 + random.nextInt(91)) == 0) {
+        if (time % (30 + random.nextInt(91)) == 0) {
             List<Entity> entities = level.getEntitiesInRange(this, 500);
             entities.add(level.getClientPlayer());
             playerToShoot = entities.get(random.nextInt(entities.size()));

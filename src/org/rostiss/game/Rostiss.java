@@ -1,8 +1,8 @@
 package org.rostiss.game;
 
 import org.rostiss.game.entity.mob.Player;
-import org.rostiss.game.graphics.Font;
 import org.rostiss.game.graphics.Renderer2D;
+import org.rostiss.game.graphics.ui.UIManager;
 import org.rostiss.game.input.Keyboard;
 import org.rostiss.game.input.Mouse;
 import org.rostiss.game.level.Level;
@@ -36,6 +36,7 @@ import static java.lang.System.nanoTime;
 public class Rostiss extends Canvas implements Runnable {
 
     private static Rostiss instance;
+    private static UIManager uiManager;
     private Renderer2D renderer;
     private Keyboard keyboard = new Keyboard();
     private Mouse mouse = new Mouse();
@@ -44,7 +45,6 @@ public class Rostiss extends Canvas implements Runnable {
     private Thread thread;
     private JFrame frame;
     private BufferedImage image;
-    private Font font;
     private String title;
     private int[] pixels;
     private int scale, width, height;
@@ -79,7 +79,6 @@ public class Rostiss extends Canvas implements Runnable {
         player = new Player(keyboard, spawn.getX(), spawn.getY());
         player.setLevel(Level.spawn);
         level.add(player);
-        font = new Font();
         frame = new JFrame();
         frame.setResizable(false);
         frame.add(this);
@@ -147,6 +146,7 @@ public class Rostiss extends Canvas implements Runnable {
     private void update() {
         keyboard.update();
         level.update();
+        getUIManager().update();
     }
 
     private void render() {
@@ -157,7 +157,7 @@ public class Rostiss extends Canvas implements Runnable {
         }
         renderer.clear();
         level.render((int) (player.getX() - renderer.width / 2), (int) (player.getY() - renderer.height / 2), renderer);
-        font.render("Heyyyy!", 0, 0, 16, renderer);
+        getUIManager().render(renderer);
         arraycopy(renderer.pixels, 0, pixels, 0, pixels.length);
         Graphics g = bufferStrategy.getDrawGraphics();
         g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
@@ -181,6 +181,12 @@ public class Rostiss extends Canvas implements Runnable {
         if (instance == null)
             instance = new Rostiss("Rostiss 0.3.7-4 Beta", 900);
         return instance;
+    }
+
+    public static UIManager getUIManager() {
+        if (uiManager == null)
+            uiManager = new UIManager();
+        return uiManager;
     }
 
     public static void main(String[] args) {

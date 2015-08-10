@@ -6,8 +6,12 @@ import org.rostiss.game.graphics.AnimatedSprite;
 import org.rostiss.game.graphics.Renderer2D;
 import org.rostiss.game.graphics.Sprite;
 import org.rostiss.game.graphics.SpriteSheet;
+import org.rostiss.game.graphics.ui.UILabel;
+import org.rostiss.game.graphics.ui.UIManager;
+import org.rostiss.game.graphics.ui.UIPanel;
 import org.rostiss.game.input.Keyboard;
 import org.rostiss.game.input.Mouse;
+import org.rostiss.game.util.Vector2i;
 
 import static java.lang.Math.atan2;
 
@@ -31,6 +35,7 @@ public class Player extends Mob {
 
     private static final double SPEED = 1;
 
+    private UIManager uiManager;
     private Keyboard keyboard;
     private Sprite sprite;
     private AnimatedSprite up = new AnimatedSprite(SpriteSheet.PLAYER_UP, 32, 32, 3);
@@ -45,6 +50,10 @@ public class Player extends Mob {
     }
 
     public Player(Keyboard keyboard, int x, int y) {
+        this.uiManager = Rostiss.getUIManager();
+        UIPanel panel = new UIPanel(new Vector2i(300 - 75, 0));
+        panel.addComponent(new UILabel(new Vector2i(0, 0), "Test"));
+        uiManager.addPanel(panel);
         this.keyboard = keyboard;
         this.x = x;
         this.y = y;
@@ -96,6 +105,6 @@ public class Player extends Mob {
 
     public void render(Renderer2D renderer) {
         sprite = animatedSprite.getSprite();
-        renderer.renderMob((int)(x - 16), (int)(y - 16), sprite, false);
+        renderer.renderMob((int) (x - 16), (int) (y - 16), sprite, false);
     }
 }
