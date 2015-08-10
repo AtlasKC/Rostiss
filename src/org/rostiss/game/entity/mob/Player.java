@@ -9,6 +9,7 @@ import org.rostiss.game.graphics.SpriteSheet;
 import org.rostiss.game.graphics.ui.UILabel;
 import org.rostiss.game.graphics.ui.UIManager;
 import org.rostiss.game.graphics.ui.UIPanel;
+import org.rostiss.game.graphics.ui.UIProgressBar;
 import org.rostiss.game.input.Keyboard;
 import org.rostiss.game.input.Mouse;
 import org.rostiss.game.util.Vector2i;
@@ -38,6 +39,7 @@ public class Player extends Mob {
     private static final double SPEED = 1;
 
     private UIManager uiManager;
+    private UIProgressBar healthBar;
     private String name;
     private Keyboard keyboard;
     private Sprite sprite;
@@ -46,7 +48,7 @@ public class Player extends Mob {
     private AnimatedSprite left = new AnimatedSprite(SpriteSheet.PLAYER_LEFT, 32, 32, 3);
     private AnimatedSprite right = new AnimatedSprite(SpriteSheet.PLAYER_RIGHT, 32, 32, 3);
     private AnimatedSprite animatedSprite = null;
-    private int animation, rate = AtlasProjectile.FIRE_RATE;
+    private int rate = AtlasProjectile.FIRE_RATE;
 
     public Player(Keyboard keyboard) {
         this.keyboard = keyboard;
@@ -61,7 +63,11 @@ public class Player extends Mob {
         this.sprite = animatedSprite.getSprite();
         this.uiManager = Rostiss.getUIManager();
         UIPanel panel = new UIPanel(new Vector2i(675, 0), new Vector2i(225, 506));
+        healthBar = (UIProgressBar)new UIProgressBar(new Vector2i(25, 210), new Vector2i(175, 15)).setColor(0xffffff);
+        health = 100;
         panel.addComponent(((UILabel) new UILabel(new Vector2i(50, 200), name).setColor(0xBBBBBB)).setFont(new Font("Verdana", Font.BOLD, 21)).setShadow(true));
+        panel.addComponent(healthBar);
+        panel.addComponent(((UILabel) new UILabel(new Vector2i(healthBar.position.getX() + 4, healthBar.position.getY() + 12), "Health").setColor(0xFFFFFF)).setFont(new Font("Verdana", Font.BOLD, 12)));
         uiManager.addPanel(panel);
     }
 
@@ -70,9 +76,6 @@ public class Player extends Mob {
         else animatedSprite.setFrame(0);
         if (rate > 0) rate--;
         double dx = 0, dy = 0;
-        animation++;
-        if (animation >= 2147483646)
-            animation = 0;
         if (keyboard.up) {
             dy -= SPEED;
             animatedSprite = up;
@@ -95,6 +98,7 @@ public class Player extends Mob {
         } else
             walking = false;
         updateShooting();
+        healthBar.setProgress(health / 100.0);
     }
 
     private void updateShooting() {
