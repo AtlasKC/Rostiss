@@ -1,9 +1,8 @@
 package org.rostiss.game.graphics.ui;
 
-import org.rostiss.game.graphics.Renderer2D;
-import org.rostiss.game.graphics.Sprite;
 import org.rostiss.game.util.Vector2i;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,15 +22,15 @@ import java.util.List;
  * from Rostiss Development.
  */
 
-public class UIPanel {
+public class UIPanel extends UIComponent {
 
     private List<UIComponent> components = new ArrayList<>();
-    private Vector2i position;
-    private Sprite sprite;
+    private Vector2i size;
 
-    public UIPanel(Vector2i position) {
-        this.position = position;
-        this.sprite = new Sprite(75, 300 / 16 * 9, 0xcacaca);
+    public UIPanel(Vector2i position, Vector2i size) {
+        super(position);
+        this.size = size;
+        color = new Color(0x4F4F4F);
     }
 
     public void addComponent(UIComponent component) { components.add(component); }
@@ -43,9 +42,10 @@ public class UIPanel {
         }
     }
 
-    public void render(Renderer2D renderer) {
-        renderer.renderSprite(position.getX(), position.getY(), sprite, false);
+    public void render(Graphics g) {
+        g.setColor(color);
+        g.fillRect(position.getX(), position.getY(), size.getX(), size.getY());
         for (UIComponent component : components)
-            component.render(renderer);
+            component.render(g);
     }
 }

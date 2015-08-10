@@ -1,7 +1,8 @@
 package org.rostiss.game.graphics.ui;
 
-import org.rostiss.game.graphics.Renderer2D;
 import org.rostiss.game.util.Vector2i;
+
+import java.awt.*;
 
 /**
  * File: UIComponent.java
@@ -22,6 +23,7 @@ import org.rostiss.game.util.Vector2i;
 public class UIComponent {
 
     public Vector2i position, offset;
+    public Color color;
 
     public UIComponent(Vector2i position) {
         this.position = position;
@@ -32,7 +34,12 @@ public class UIComponent {
         this.offset = offset;
     }
 
+    public UIComponent setColor(int color) {
+        this.color = new Color(color);
+        return this;
+    }
+
     public void update() {}
 
-    public void render(Renderer2D renderer) {}
+    public void render(Graphics g) {}
 }

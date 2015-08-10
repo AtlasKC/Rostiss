@@ -67,16 +67,16 @@ public class Rostiss extends Canvas implements Runnable {
     }
 
     private Rostiss(String title, int width, int height, int scale) {
-        this.width = width;
+        this.width = width - 75;
         this.height = height;
         this.scale = scale;
         this.title = title;
         TileCoords spawn = new TileCoords(19, 62);
-        setPreferredSize(new Dimension(this.width * this.scale, this.height * this.scale));
+        setPreferredSize(new Dimension((this.width + 75) * this.scale, this.height * this.scale));
         image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
         renderer = new Renderer2D(width, height);
-        player = new Player(keyboard, spawn.getX(), spawn.getY());
+        player = new Player("AtlasIND", keyboard, spawn.getX(), spawn.getY());
         player.setLevel(Level.spawn);
         level.add(player);
         frame = new JFrame();
@@ -157,10 +157,10 @@ public class Rostiss extends Canvas implements Runnable {
         }
         renderer.clear();
         level.render((int) (player.getX() - renderer.width / 2), (int) (player.getY() - renderer.height / 2), renderer);
-        getUIManager().render(renderer);
         arraycopy(renderer.pixels, 0, pixels, 0, pixels.length);
         Graphics g = bufferStrategy.getDrawGraphics();
         g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
+        getUIManager().render(g);
         g.dispose();
         bufferStrategy.show();
     }

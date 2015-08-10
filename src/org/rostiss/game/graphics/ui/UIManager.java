@@ -1,7 +1,6 @@
 package org.rostiss.game.graphics.ui;
 
-import org.rostiss.game.graphics.Renderer2D;
-
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,8 +35,8 @@ public class UIManager {
             panel.update();
     }
 
-    public void render(Renderer2D renderer) {
+    public void render(Graphics g) {
         for(UIPanel panel : panels)
-            panel.render(renderer);
+            panel.render(g);
     }
 }

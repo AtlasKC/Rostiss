@@ -13,6 +13,8 @@ import org.rostiss.game.input.Keyboard;
 import org.rostiss.game.input.Mouse;
 import org.rostiss.game.util.Vector2i;
 
+import java.awt.*;
+
 import static java.lang.Math.atan2;
 
 /**
@@ -36,6 +38,7 @@ public class Player extends Mob {
     private static final double SPEED = 1;
 
     private UIManager uiManager;
+    private String name;
     private Keyboard keyboard;
     private Sprite sprite;
     private AnimatedSprite up = new AnimatedSprite(SpriteSheet.PLAYER_UP, 32, 32, 3);
@@ -49,16 +52,17 @@ public class Player extends Mob {
         this.keyboard = keyboard;
     }
 
-    public Player(Keyboard keyboard, int x, int y) {
-        this.uiManager = Rostiss.getUIManager();
-        UIPanel panel = new UIPanel(new Vector2i(300 - 75, 0));
-        panel.addComponent(new UILabel(new Vector2i(0, 0), "Test"));
-        uiManager.addPanel(panel);
+    public Player(String name, Keyboard keyboard, int x, int y) {
+        this.name = name;
         this.keyboard = keyboard;
         this.x = x;
         this.y = y;
         this.animatedSprite = down;
         this.sprite = animatedSprite.getSprite();
+        this.uiManager = Rostiss.getUIManager();
+        UIPanel panel = new UIPanel(new Vector2i(675, 0), new Vector2i(225, 506));
+        panel.addComponent(((UILabel) new UILabel(new Vector2i(50, 200), name).setColor(0xBBBBBB)).setFont(new Font("Verdana", Font.BOLD, 21)).setShadow(true));
+        uiManager.addPanel(panel);
     }
 
     public void update() {
@@ -106,5 +110,13 @@ public class Player extends Mob {
     public void render(Renderer2D renderer) {
         sprite = animatedSprite.getSprite();
         renderer.renderMob((int) (x - 16), (int) (y - 16), sprite, false);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

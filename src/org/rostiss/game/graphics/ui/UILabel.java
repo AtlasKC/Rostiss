@@ -1,8 +1,8 @@
 package org.rostiss.game.graphics.ui;
 
-import org.rostiss.game.graphics.Font;
-import org.rostiss.game.graphics.Renderer2D;
 import org.rostiss.game.util.Vector2i;
+
+import java.awt.*;
 
 /**
  * File: UILabel.java
@@ -25,14 +25,33 @@ public class UILabel extends UIComponent {
     public String text;
 
     private Font font;
+    private boolean shadow;
 
     public UILabel(Vector2i position, String text) {
         super(position);
         this.text = text;
-        this.font = new Font();
+        this.font = new Font("Verdana", Font.PLAIN, 32);
+        this.color = new Color(0xFF00FF);
     }
 
-    public void render(Renderer2D renderer) {
-        font.render(text, position.getX() + offset.getX(), position.getY() + offset.getY(), 12, renderer);
+    public void render(Graphics g) {
+        if(shadow) {
+            g.setFont(new Font(font.getFontName(), font.getStyle(), font.getSize()));
+            g.setColor(Color.black);
+            g.drawString(text, position.getX() + offset.getX() - 3, position.getY() + offset.getY() + 3);
+        }
+        g.setFont(font);
+        g.setColor(color);
+        g.drawString(text, position.getX() + offset.getX(), position.getY() + offset.getY());
+    }
+
+    public UILabel setFont(Font font) {
+        this.font = font;
+        return this;
+    }
+
+    public UILabel setShadow(boolean shadow) {
+        this.shadow = shadow;
+        return this;
     }
 }
