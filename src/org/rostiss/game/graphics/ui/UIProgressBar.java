@@ -2,11 +2,9 @@ package org.rostiss.game.graphics.ui;
 
 import org.rostiss.game.util.Vector2i;
 
-import java.awt.*;
-
 /**
- * File: UIComponent.java
- * Created by Atlas IND on 8/8/2015 at 11:07 PM.
+ * File: UIProgressBar.java
+ * Created by Atlas IND on 8/10/2015 at 3:49 PM.
  * [2014] - [2015] Rostiss Development
  * All rights reserved.
  * NOTICE:  All information contained herein is, and remains
@@ -20,28 +18,10 @@ import java.awt.*;
  * from Rostiss Development.
  */
 
-public class UIComponent {
+public class UIProgressBar extends UIComponent {
 
-    public Vector2i position;
-    public Color color;
 
-    protected Vector2i offset;
-
-    public UIComponent(Vector2i position) {
-        this.position = position;
-        offset = new Vector2i();
+    public UIProgressBar(Vector2i position) {
+        super(position);
     }
-
-    void setOffset(Vector2i offset) {
-        this.offset = offset;
-    }
-
-    public UIComponent setColor(int color) {
-        this.color = new Color(color);
-        return this;
-    }
-
-    public void update() {}
-
-    public void render(Graphics g) {}
 }
